@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace WatchMonoGameContent {
 
     class Program {
@@ -31,25 +32,30 @@ namespace WatchMonoGameContent {
         }
 
         static void Main(string[] args) {
+            // check and parce parameters
             if (args.Length != 1) {
                 Help();
-            } else {
-                var rootName = args[0];
-                if (!rootName.EndsWith("\\") && (!rootName.EndsWith("/"))) {
-                    rootName += "\\";
-                }
-                var fileName = rootName + "WatchMonoGameContent.json";
-                if (!File.Exists(fileName)) {
+                return;
+            }
 
-                    Console.WriteLine("Error: Configuration file not found.");
-                    Console.WriteLine(Directory.GetCurrentDirectory());
-                    Help();
-                } else {
-                    var conf = ReadConfigFile(fileName);
-                    foreach (var folder in conf) {
-                        CheckFolder.Check(rootName + folder);
-                    }
-                }
+            var rootName = args[0];
+            if (!rootName.EndsWith("\\") && (!rootName.EndsWith("/"))) {
+                rootName += "\\";
+            }
+
+            // path to config file
+            var fileName = rootName + "WatchMonoGameContent.json";
+ 
+            if (!File.Exists(fileName)) {
+                Console.WriteLine("Error: Configuration file not found.");
+                Console.WriteLine(Directory.GetCurrentDirectory());
+                Help();
+                return;
+            } 
+
+            var conf = ReadConfigFile(fileName);
+            foreach (var folder in conf) {
+                CheckFolder.Check(rootName + folder);
             }
 
 
