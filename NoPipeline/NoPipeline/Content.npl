@@ -1,0 +1,38 @@
+{
+	"path": "C:/work.bb/NoPipeline/NoPipeline/NoPipeline/Content/Content.mgcb",
+	"content": {
+		"contentList": {
+			"path": "folder/*.mcgb",
+			"recursive": "False",
+			"action": "build",
+			"importer": "AssetInfoImporter",
+			"processor": "PassThroughProcessor"
+		},
+		"music": {
+			"path": "Audio/Music/*.ogg",
+			"recursive": "True",
+			"action": "copy"
+		},
+		"spriteGroup": {
+			"path": "Graphics/Default/*.spritegroup",
+			"recursive": "True",
+			"action": "build",
+			"importer": "SpriteGroupImporter",
+			"processor": "SpriteGroupProcessor",
+			"watch": {
+				"default": [
+					"Default/*.png",
+					"Default/*.json"
+				],
+				"special": ["Special/"]
+			}
+		},
+		"specificFile": {
+			"file": "Path/To/File/specificFile.txt",
+			"action": "build",
+			"importer": "SpriteGroupImporter",
+			"processor": "SpriteGroupProcessor"
+		}
+
+	}
+}

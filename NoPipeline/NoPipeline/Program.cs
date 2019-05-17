@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,16 +17,9 @@ namespace NoPipeline {
 			Console.WriteLine("    NoPipeline $(ProjectDir)\\NoPipeline.json");
 		}
 
-		static Dictionary<string, string> ReadConfigFile(string fileName) {
-			Dictionary<string, string> res = new Dictionary<string, string>();
-			try {
-				string configText = File.ReadAllText(fileName, Encoding.UTF8);
-				res = JsonConvert.DeserializeObject<Dictionary<string, string>>(configText);
-			} catch {
-				Console.WriteLine("File Not Found");
-				Console.WriteLine(Directory.GetCurrentDirectory());
-				Help();
-			}
+		static JObject ReadConfigFile(string fileName) {
+			string configText = File.ReadAllText(fileName, Encoding.UTF8);
+			JObject res = JObject.Parse(File.ReadAllText(fileName));
 			return res;
 		}
 
@@ -47,6 +41,10 @@ namespace NoPipeline {
 			}
 
 			var conf = ReadConfigFile(configName);
+			Console.WriteLine(conf["path"]);
+			var content = new MGCB(conf["path"].ToString());
+			content.Check();
+			content.Save();
 			//foreach (var folder in conf) {
 			//	CheckFolder.Check(rootName + folder);
 			//}
