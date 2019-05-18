@@ -1,5 +1,6 @@
 {
-	"path": "C:/work.bb/NoPipeline/NoPipeline/NoPipeline/Content/Content.mgcb",
+	"root": "C:/work.bb/NoPipeline/NoPipeline/NoPipeline/Content/",
+	"path": "Content.mgcb",
 	"content": {
 		"contentList": {
 			"path": "folder/*.mcgb",
@@ -19,16 +20,14 @@
 			"action": "build",
 			"importer": "SpriteGroupImporter",
 			"processor": "SpriteGroupProcessor",
-			"watch": {
-				"default": [
+			"watch": [
 					"Default/*.png",
-					"Default/*.json"
-				],
-				"special": ["Special/"]
-			}
+					"Default/*.json",
+					"Special/"
+			]
 		},
 		"specificFile": {
-			"file": "Path/To/File/specificFile.txt",
+			"path": "Path/To/File/specificFile.txt",
 			"action": "build",
 			"importer": "SpriteGroupImporter",
 			"processor": "SpriteGroupProcessor"

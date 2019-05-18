@@ -40,14 +40,14 @@ namespace NoPipeline {
 				return;
 			}
 
-			var conf = ReadConfigFile(configName);
+			JObject conf = ReadConfigFile(configName);
+
 			Console.WriteLine(conf["path"]);
-			var content = new MGCB(conf["path"].ToString());
+			var content = new MGCB(conf);
+			//
+			var cp = new ContentProcessor(conf, content);
 			content.Check();
 			content.Save();
-			//foreach (var folder in conf) {
-			//	CheckFolder.Check(rootName + folder);
-			//}
 
 
 			Console.ReadKey();

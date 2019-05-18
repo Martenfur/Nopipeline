@@ -6,18 +6,46 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Collections;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace NoPipeline {
 	public class Item {
 		public StringBuilder Param { get; set; }
 		public string Name { get; set; }
+		public bool Recursive { get; set; }
+		public List<string> Watch { get; set; }
 
 		public Item() {
 			Param = new StringBuilder();
+			Recursive = false;
+			Watch = new List<string>();
 		}
 
 		public override string ToString() {
 			return $"#begin {Name}" + System.Environment.NewLine + Param.ToString();
+		}
+
+		public void Add(string param, JToken value) {
+			switch (param) {
+				case "path":
+					Name = value.ToString();
+					break;
+				case "recursive":
+					Recursive = value.ToString() == "True";
+					break;
+				case "action":
+					Param.Append($"/{value.ToString()}:{Name}");
+					break;
+				case "importer":
+				case "processor":
+					Param.Append($"/{param}:{value.ToString()}");
+					break;
+				case "wath":
+					Watch = value.ToObject<List<string>>();
+
+					break;
+				default: throw new Exception(String.Format("Unknown param: {0}", param));
+			}
 		}
 	}
 
@@ -27,7 +55,8 @@ namespace NoPipeline {
 		public string CfgName { get; set; }
 		public string CfgPath { get; set; }
 
-		public MGCB(string name) {   // Read mgcb config file
+		public MGCB(JObject conf) {   // Read mgcb config file
+			string name = conf["root"].ToString().TrimEnd('/', '\\') + "/" + conf["path"].ToString();  // path to Content.mgcb
 			if (!File.Exists(name)) {
 				throw new Exception($"{name} file not found!");
 			}
