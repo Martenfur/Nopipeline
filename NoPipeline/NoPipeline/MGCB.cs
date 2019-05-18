@@ -22,23 +22,23 @@ namespace NoPipeline {
 		}
 
 		public override string ToString() {
-			return $"#begin {Name}" + System.Environment.NewLine + Param.ToString();
+			return $"#begin {Name.Replace('\\', '/')}" + System.Environment.NewLine + Param.ToString();
 		}
 
 		public void Add(string param, JToken value) {
 			switch (param) {
 				case "path":
-					Name = value.ToString();
+					Name = value.ToString().Replace('\\', '/');
 					break;
 				case "recursive":
 					Recursive = value.ToString() == "True";
 					break;
 				case "action":
-					Param.Append($"/{value.ToString()}:{Name}");
+					Param.Append($"/{value.ToString()}:{Name.Replace('\\', '/')}{System.Environment.NewLine}");
 					break;
 				case "importer":
 				case "processor":
-					Param.Append($"/{param}:{value.ToString()}");
+					Param.Append($"/{param}:{value.ToString().Replace('\\', '/')}{System.Environment.NewLine}");
 					break;
 				case "wath":
 					Watch = value.ToObject<List<string>>();

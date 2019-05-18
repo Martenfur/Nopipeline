@@ -18,7 +18,7 @@ namespace NoPipeline {
 				JObject section = itm.Value as JObject;
 
 				// read item
-				string path ;
+				string path;
 				try {
 					path = section["path"].ToString();
 				} catch {
@@ -41,6 +41,7 @@ namespace NoPipeline {
 							it.Add(sect.Key, sect.Value);
 						}
 					}
+					it.Param.Append(System.Environment.NewLine); // last empty line
 					content.Items.Add(it.Name, it);
 				}
 			}
