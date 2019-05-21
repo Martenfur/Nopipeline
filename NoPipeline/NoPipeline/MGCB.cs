@@ -36,15 +36,12 @@ namespace NoPipeline {
 				case "action":
 					Param.Append($"/{value.ToString()}:{Name.Replace('\\', '/')}{System.Environment.NewLine}");
 					break;
-				case "importer":
-				case "processor":
-					Param.Append($"/{param}:{value.ToString().Replace('\\', '/')}{System.Environment.NewLine}");
-					break;
 				case "wath":
 					Watch = value.ToObject<List<string>>();
-
 					break;
-				default: throw new Exception(String.Format("Unknown param: {0}", param));
+				default:
+					Param.Append($"/{param}:{value.ToString().Replace('\\', '/')}{System.Environment.NewLine}");
+					break;
 			}
 		}
 	}
@@ -56,6 +53,7 @@ namespace NoPipeline {
 		public string CfgPath { get; set; }
 
 		public MGCB(JObject conf) {   // Read mgcb config file
+			string root = conf["root"].ToString().TrimEnd('/', '\\');
 			string name = conf["root"].ToString().TrimEnd('/', '\\') + "/" + conf["path"].ToString();  // path to Content.mgcb
 			if (!File.Exists(name)) {
 				throw new Exception($"{name} file not found!");
@@ -98,8 +96,29 @@ namespace NoPipeline {
 
 		public void Check() {   // check all items exist
 			var ItemsCheck = new Dictionary<string, Item>();
+
 			foreach (Item it in Items.Values) {
-				if (File.Exists(CfgPath + "/" + it.Name)) {  // not exists - remove from Items
+				if (File.Exists(CfgPath + "/" + it.Name)) {  // not exists - not include to Items
+					DateTime lastModified = File.GetLastWriteTime(CfgPath + "/" + it.Name);
+					// check if "watch" present
+					try {
+						foreach (var file2check in it.Watch) {
+							var fileName = Path.GetFileName(file2check);
+							var filePath = Path.GetDirectoryName(file2check);
+							var files = Directory.GetFiles($"{CfgPath}/{filePath}", fileName, SearchOption.AllDirectories);
+							foreach (var f in files) {
+								DateTime f_lastModified = File.GetLastWriteTime(f);
+								if (lastModified < f_lastModified) {
+									// change datetime required
+									File.SetLastWriteTime(CfgPath + "/" + it.Name, DateTime.Now);
+									break;
+								}
+							}
+						}
+					} catch {
+						// Update datetime in any error
+						File.SetLastWriteTime(CfgPath + "/" + it.Name, DateTime.Now);
+					}
 					ItemsCheck.Add(it.Name, it);
 				}
 			}

@@ -43,14 +43,16 @@ namespace NoPipeline {
 			JObject conf = ReadConfigFile(configName);
 
 			Console.WriteLine(conf["path"]);
+			// read mgcb file
 			var content = new MGCB(conf);
-			//
+			// read config file
 			var cp = new ContentProcessor(conf, content);
+			// check all files
 			content.Check();
 			content.Save();
 
 
-			Console.ReadKey();
+			//Console.ReadKey();
 		}
 	}
 }

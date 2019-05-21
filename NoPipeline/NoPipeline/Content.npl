@@ -12,7 +12,11 @@
 		"music": {
 			"path": "Audio/Music/*.ogg",
 			"recursive": "True",
-			"action": "copy"
+			"action": "copy",
+			"processorParam": {
+			    "Debug": "True",
+			    "OtherStuff": "thgins"
+			}
 		},
 		"spriteGroup": {
 			"path": "Graphics/Default/*.spritegroup",
@@ -23,7 +27,7 @@
 			"watch": [
 					"Default/*.png",
 					"Default/*.json",
-					"Special/"
+					"Special/*"
 			]
 		},
 		"specificFile": {
