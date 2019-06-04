@@ -3,12 +3,16 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json.Linq;
 
-namespace NoPipeline
-{
-	class Program
-	{
-		static void Help()
-		{
+namespace NoPipeline {
+	/* 
+	 * The main class
+	 * Run point
+	 */
+	class Program {
+		/* 
+		 * Help print utility help on the console
+		 */
+		static void Help() {
 			Console.WriteLine("NoPipeline utility");
 			Console.WriteLine("Usage:");
 			Console.WriteLine("    NoPipeline NoPipeline.json");
@@ -16,42 +20,56 @@ namespace NoPipeline
 			Console.WriteLine("    NoPipeline $(ProjectDir)\\NoPipeline.json");
 		}
 
-		static JObject ReadConfigFile(string fileName)
-		{
+		/*
+		 * ReadConfigFile reading Json configuration file
+		 * Parameter:
+		 *   fileName - config file name
+		 * Return:
+		 *   JObject contains all configuration
+		 */
+		static JObject ReadConfigFile(string fileName) {
 			string configText = File.ReadAllText(fileName, Encoding.UTF8);
 			JObject res = JObject.Parse(File.ReadAllText(fileName));
 			return res;
 		}
-
-		static void Main(string[] args)
-		{
-			// check and parce parameters
-			if(args.Length != 1)
-			{
+		/*
+		 * Main - start point
+		 */
+		static void Main(string[] args) {
+			// print help information if parameter was not provided
+			if (args.Length != 1) {
 				Help();
 				return;
 			}
 
-			// path to config file
+			// Read config file name from the input parameter
 			var configName = args[0];
 
-			if(!File.Exists(configName))
-			{
+			// check if configuration file exists
+			if (!File.Exists(configName)) {
 				Console.WriteLine("Error: Configuration file not found.");
 				Console.WriteLine(Directory.GetCurrentDirectory());
 				Help();
 				return;
 			}
 
+			// read config file
 			JObject conf = ReadConfigFile(configName);
 
+			// print config file name to the console
 			Console.WriteLine(conf["path"]);
-			// read mgcb file
+
+			// Create MGCB object to read mgcb file
 			var content = new MGCB(conf);
-			// read config file
+
+			// Create ContentProcessor object to read config file and update content
+			// content will be overwrited from config file
 			var cp = new ContentProcessor(conf, content);
-			// check all files
-			content.Check();
+
+			// Check all rules in content object and update timestamp of files if required.
+			content.ContentCheck();
+
+			// Save MGCB file
 			content.Save();
 
 

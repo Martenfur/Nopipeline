@@ -1,41 +1,41 @@
 {
-	"root": "C:/work.bb/NoPipeline/NoPipeline/NoPipeline/Content/",
-	"path": "Content.mgcb",
-	"content": {
-		"contentList": {
-			"path": "folder/*.mcgb",
-			"recursive": "False",
-			"action": "build",
-			"importer": "AssetInfoImporter",
-			"processor": "PassThroughProcessor"
-		},
-		"music": {
-			"path": "Audio/Music/*.ogg",
-			"recursive": "True",
-			"action": "copy",
-			"processorParam": {
-			    "Debug": "True",
-			    "OtherStuff": "thgins"
-			}
-		},
-		"spriteGroup": {
-			"path": "Graphics/Default/*.spritegroup",
-			"recursive": "True",
-			"action": "build",
-			"importer": "SpriteGroupImporter",
-			"processor": "SpriteGroupProcessor",
-			"watch": [
-					"Default/*.png",
-					"Default/*.json",
-					"Special/*" 
-			]
-		},
-		"specificFile": {
-			"path": "Path/To/File/specificFile.txt",
-			"action": "build",
-			"importer": "SpriteGroupImporter",
-			"processor": "SpriteGroupProcessor"
-		}
+  "root": "C:/work.bb/NoPipeline/NoPipeline/NoPipeline/Content/",
+  "path": "Content.mgcb",
+  "content": {
+    "contentList": {
+      "path": "folder/*.mcgb",
+      "recursive": "False",
+      "action": "build",
+      "importer": "AssetInfoImporter",
+      "processor": "PassThroughProcessor"
+    },
+    "music": {
+      "path": "Audio/Music/*.ogg",
+      "recursive": "True",
+      "action": "copy",
+      "processorParam": {
+        "Debug": "True",
+        "OtherStuff": "thgins"
+      }
+    },
+    "spriteGroup": {
+      "path": "Graphics/Default/*.spritegroup",
+      "recursive": "True",
+      "action": "build",
+      "importer": "SpriteGroupImporter",
+      "processor": "SpriteGroupProcessor",
+      "watch": [
+        "Default/*.png",
+        "Default/*.json",
+        "Special/*"
+      ]
+    },
+    "specificFile": {
+      "path": "Path/To/File/specificFile.txt",
+      "action": "build",
+      "importer": "SpriteGroupImporter",
+      "processor": "SpriteGroupProcessor"
+    }
 
-	}
+  }
 }
