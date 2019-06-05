@@ -3,16 +3,19 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json.Linq;
 
-namespace NoPipeline {
+namespace NoPipeline
+{
 	/* 
 	 * The main class
 	 * Run point
 	 */
-	class Program {
+	class Program
+	{
 		/* 
 		 * Help print utility help on the console
 		 */
-		static void Help() {
+		static void Help()
+		{
 			Console.WriteLine("NoPipeline utility");
 			Console.WriteLine("Usage:");
 			Console.WriteLine("    NoPipeline NoPipeline.json");
@@ -27,17 +30,20 @@ namespace NoPipeline {
 		 * Return:
 		 *   JObject contains all configuration
 		 */
-		static JObject ReadConfigFile(string fileName) {
-			string configText = File.ReadAllText(fileName, Encoding.UTF8);
-			JObject res = JObject.Parse(File.ReadAllText(fileName));
-			return res;
+		static JObject ReadConfigFile(string fileName)
+		{
+			var configText = File.ReadAllText(fileName, Encoding.UTF8);
+			return JObject.Parse(configText);
 		}
+
 		/*
 		 * Main - start point
 		 */
-		static void Main(string[] args) {
+		static void Main(string[] args)
+		{
 			// print help information if parameter was not provided
-			if (args.Length != 1) {
+			if(args.Length != 1)
+			{
 				Help();
 				return;
 			}
@@ -46,7 +52,8 @@ namespace NoPipeline {
 			var configName = args[0];
 
 			// check if configuration file exists
-			if (!File.Exists(configName)) {
+			if(!File.Exists(configName))
+			{
 				Console.WriteLine("Error: Configuration file not found.");
 				Console.WriteLine(Directory.GetCurrentDirectory());
 				Help();
