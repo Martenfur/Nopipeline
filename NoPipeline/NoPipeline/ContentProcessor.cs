@@ -13,17 +13,18 @@ namespace NoPipeline
 	class ContentProcessor
 	{
 
-		public ContentProcessor(JObject conf, MGCB content)
+		public ContentProcessor(JObject conf, MGCB content, string rootPath)
 		{
 			JObject contentJson = conf["content"] as JObject;
-			string rootPath = conf["root"].ToString().TrimEnd('/', '\\') + "/";
+			
+			Console.WriteLine("Reading NPL config.");
+
 			foreach(var itm in contentJson)
 			{
 				// Read section
 				string sectionName = itm.Key;
 				JObject section = itm.Value as JObject;
-				//StringBuilder processorParamsStr = new StringBuilder();
-
+				
 				// read item
 				string path;
 				try
@@ -35,16 +36,12 @@ namespace NoPipeline
 					Console.WriteLine($"key 'path' not exist in  {sectionName} ");
 					throw new Exception($"key 'path' not exist in  {sectionName} ");
 				}
-				//if (section.ContainsKey("processorParams")) {
-				//	JObject processorParams = section["processorParams"] as JObject;
-				//	foreach (var pp in processorParams) {
-				//		StringBuilder processorParamsStr = new StringBuilder();
-
-				//	}
-				//}
+				
+				Console.WriteLine("Rule: " + path);
+				
 				var fileName = Path.GetFileName(path);
 				var filePath = Path.GetDirectoryName(path);
-				string[] files = new string[] { };
+				var files = new string[] { };
 
 				try
 				{
@@ -64,6 +61,8 @@ namespace NoPipeline
 				{
 					var name = file.Remove(0, rootPath.Length).Replace('\\', '/');
 					var it = new Item() { Path = name };
+
+					Console.WriteLine("    Reading " + name);
 
 					foreach(var sect in section)
 					{
@@ -85,7 +84,6 @@ namespace NoPipeline
 						}
 					}
 
-					//it.Param.Append(System.Environment.NewLine); // last empty line
 					if(content.Items.ContainsKey(it.Path))
 					{
 						content.Items[it.Path] = it;
@@ -97,6 +95,9 @@ namespace NoPipeline
 				}
 
 			}
+
+			Console.WriteLine("Finished reading NPL config!");
+			Console.WriteLine();
 		}
 	}
 }

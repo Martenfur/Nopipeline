@@ -29,22 +29,23 @@ namespace NoPipeline
 		public string CfgName { get; set; }
 		public string CfgPath { get; set; }
 
-		public MGCB(JObject conf)
+		public MGCB(JObject conf, string rootPath)
 		{   
 			// Read mgcb config file
-
-
-
-			string root = conf["root"].ToString().TrimEnd('/', '\\');
-			string name = conf["root"].ToString().TrimEnd('/', '\\') + "/" + conf["path"].ToString();  // path to Content.mgcb
+			
+			var name = rootPath.TrimEnd('/', '\\') + "/" + conf["path"].ToString();  // path to Content.mgcb
+			
 			if(!File.Exists(name))
 			{
 				throw new Exception($"{name} file not found!");
 			}
+
+			Console.WriteLine("Reading MGCB config " + name);
+
 			CfgName = name;
 			CfgPath = Path.GetDirectoryName(name);
 			string line;
-			bool isItemSection = false;
+			var isItemSection = false;
 			Item it = null;
 			Header = new StringBuilder();
 			Items = new Dictionary<string, Item>();
@@ -73,6 +74,7 @@ namespace NoPipeline
 								Path = line.Substring(7)
 							};
 							Items.Add(it.Path, it); // add to the dictionary
+							Console.WriteLine("Reading " + it.Path);
 						}
 						else
 						{
@@ -82,6 +84,9 @@ namespace NoPipeline
 				}
 			}
 
+			Console.WriteLine("Finished reading MGCB config! Got " + Items.Count + " items.");
+			Console.WriteLine();
+				
 		}
 
 		public void ContentCheck()
@@ -101,7 +106,7 @@ namespace NoPipeline
 					
 					foreach(var checkWildcard in it.Watch)
 					{
-						Console.WriteLine("Checking: " + checkWildcard);
+						Console.WriteLine("Checking watch for " + checkWildcard);
 
 						var fileName = Path.GetFileName(checkWildcard);
 						var filePath = Path.GetDirectoryName(checkWildcard);
@@ -134,13 +139,19 @@ namespace NoPipeline
 					
 					ItemsCheck.Add(it.Path, it);
 				}
+				else
+				{
+					Console.WriteLine(it.Path + " doesn't exists anymore. Removing it from the config.");
+				}
 			}
 			Items = ItemsCheck;
 		}
 
 		public void Save()
-		{ // save config file
-			using(var file = new System.IO.StreamWriter(CfgName))
+		{ 
+			// save config file
+			Console.WriteLine("Saving new config.");
+			using(var file = new StreamWriter(CfgName))
 			{
 				// header
 				file.Write(Header.ToString());
@@ -152,7 +163,7 @@ namespace NoPipeline
 				}
 
 			}
-
+			Console.WriteLine("Done! :o");
 		}
 
 	}

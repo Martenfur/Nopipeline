@@ -11,16 +11,17 @@ namespace NoPipeline
 	 */
 	class Program
 	{
+		public const string Version = "1.0.0";
+
 		/* 
 		 * Help print utility help on the console
 		 */
 		static void Help()
 		{
-			Console.WriteLine("NoPipeline utility");
-			Console.WriteLine("Usage:");
-			Console.WriteLine("    NoPipeline NoPipeline.json");
-			Console.WriteLine("Example:");
-			Console.WriteLine("    NoPipeline $(ProjectDir)\\NoPipeline.json");
+			Console.WriteLine("Run with path to .mgcb or .npl config as an argument:");
+			Console.WriteLine("    NoPipeline.exe Content/Content.mgcb");
+			Console.WriteLine("or");
+			Console.WriteLine("    NoPipeline.exe Content/Content.npl");
 		}
 
 		/*
@@ -35,12 +36,11 @@ namespace NoPipeline
 			var configText = File.ReadAllText(fileName, Encoding.UTF8);
 			return JObject.Parse(configText);
 		}
-
-		/*
-		 * Main - start point
-		 */
+		
 		static void Main(string[] args)
 		{
+			Console.WriteLine("NoPipeline v" + Version);
+
 			// print help information if parameter was not provided
 			if(args.Length != 1)
 			{
@@ -49,29 +49,35 @@ namespace NoPipeline
 			}
 
 			// Read config file name from the input parameter
-			var configName = args[0];
+
+			var configPath = args[0].Replace("\\", "/");
+			if (configPath.EndsWith(".mgcb"))
+			{
+				configPath = Path.GetDirectoryName(configPath) 
+					+ "/"
+					+ Path.GetFileNameWithoutExtension(configPath) 
+					+ ".npl";
+			}
 
 			// check if configuration file exists
-			if(!File.Exists(configName))
+			if(!File.Exists(configPath))
 			{
-				Console.WriteLine("Error: Configuration file not found.");
-				Console.WriteLine(Directory.GetCurrentDirectory());
+				Console.WriteLine(configPath + " not found!");
 				Help();
 				return;
 			}
 
-			// read config file
-			JObject conf = ReadConfigFile(configName);
-
-			// print config file name to the console
-			Console.WriteLine(conf["path"]);
+			
+			JObject conf = ReadConfigFile(configPath);
+			
+			var rootPath = Path.GetDirectoryName(configPath).Replace("\\", "/") + "/";
 
 			// Create MGCB object to read mgcb file
-			var content = new MGCB(conf);
+			var content = new MGCB(conf, rootPath);
 
 			// Create ContentProcessor object to read config file and update content
 			// content will be overwrited from config file
-			var cp = new ContentProcessor(conf, content);
+			var cp = new ContentProcessor(conf, content, rootPath);
 
 			// Check all rules in content object and update timestamp of files if required.
 			content.ContentCheck();
