@@ -30,7 +30,11 @@ namespace NoPipeline
 		public string CfgPath { get; set; }
 
 		public MGCB(JObject conf)
-		{   // Read mgcb config file
+		{   
+			// Read mgcb config file
+
+
+
 			string root = conf["root"].ToString().TrimEnd('/', '\\');
 			string name = conf["root"].ToString().TrimEnd('/', '\\') + "/" + conf["path"].ToString();  // path to Content.mgcb
 			if(!File.Exists(name))
@@ -90,30 +94,44 @@ namespace NoPipeline
 				{  // not exists - not include to Items
 					DateTime lastModified = File.GetLastWriteTime(CfgPath + "/" + it.Path);
 					// check if "watch" present
-					try
+					
+					var relativeItemPath =  CfgPath + "/" + Path.GetDirectoryName(it.Path);
+
+					
+					
+					foreach(var checkWildcard in it.Watch)
 					{
-						foreach(var file2check in it.Watch)
+						Console.WriteLine("Checking: " + checkWildcard);
+
+						var fileName = Path.GetFileName(checkWildcard);
+						var filePath = Path.GetDirectoryName(checkWildcard);
+
+						string[] files;
+					
+						try
 						{
-							var fileName = Path.GetFileName(file2check);
-							var filePath = Path.GetDirectoryName(file2check);
-							var files = Directory.GetFiles($"{CfgPath}/{filePath}", fileName, SearchOption.AllDirectories);
-							foreach(var f in files)
+							files = Directory.GetFiles($"{relativeItemPath}/{filePath}", fileName, SearchOption.AllDirectories);
+						}
+						catch
+						{
+							Console.WriteLine(checkWildcard + " wasn't found. Skipping.");
+							continue;
+						}
+
+						foreach(var f in files)
+						{
+							DateTime f_lastModified = File.GetLastWriteTime(f);
+							if(lastModified < f_lastModified)
 							{
-								DateTime f_lastModified = File.GetLastWriteTime(f);
-								if(lastModified < f_lastModified)
-								{
-									// change datetime required
-									File.SetLastWriteTime(CfgPath + "/" + it.Path, DateTime.Now);
-									break;
-								}
+								// change datetime required
+								Console.WriteLine("Modifying: " + f);
+								File.SetLastWriteTime(CfgPath + "/" + it.Path, DateTime.Now);
+								break;
 							}
 						}
 					}
-					catch
-					{
-						// Update datetime in any error
-						File.SetLastWriteTime(CfgPath + "/" + it.Path, DateTime.Now);
-					}
+					
+					
 					ItemsCheck.Add(it.Path, it);
 				}
 			}

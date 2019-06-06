@@ -93,7 +93,6 @@ namespace NoPipeline
 					else
 					{
 						content.Items.Add(it.Path, it);
-						Console.WriteLine("NEW BOI: " + it.Path + " " + content.Items.Count);
 					}
 				}
 
