@@ -50,30 +50,41 @@ namespace NoPipeline
 
 			// Read config file name from the input parameter
 
+			string MGCBConfigPath, NPLConfigPath;
+
 			var configPath = args[0].Replace("\\", "/");
 			if (configPath.EndsWith(".mgcb"))
 			{
-				configPath = Path.GetDirectoryName(configPath) 
+				MGCBConfigPath = configPath;
+				NPLConfigPath = Path.GetDirectoryName(configPath) 
 					+ "/"
 					+ Path.GetFileNameWithoutExtension(configPath) 
 					+ ".npl";
 			}
+			else
+			{
+				NPLConfigPath = configPath;
+				MGCBConfigPath = Path.GetDirectoryName(configPath) 
+					+ "/"
+					+ Path.GetFileNameWithoutExtension(configPath) 
+					+ ".mgcb";
+			}
 
 			// check if configuration file exists
-			if(!File.Exists(configPath))
+			if (!File.Exists(NPLConfigPath) || !File.Exists(NPLConfigPath))
 			{
-				Console.WriteLine(configPath + " not found!");
+				Console.WriteLine(NPLConfigPath + " not found!");
 				Help();
 				return;
 			}
 
 			
-			JObject conf = ReadConfigFile(configPath);
+			JObject conf = ReadConfigFile(NPLConfigPath);
 			
 			var rootPath = Path.GetDirectoryName(configPath).Replace("\\", "/") + "/";
 
 			// Create MGCB object to read mgcb file
-			var content = new MGCB(conf, rootPath);
+			var content = new MGCB(conf, MGCBConfigPath);
 
 			// Create ContentProcessor object to read config file and update content
 			// content will be overwrited from config file

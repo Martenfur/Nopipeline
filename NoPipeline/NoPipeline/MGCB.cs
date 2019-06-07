@@ -29,28 +29,21 @@ namespace NoPipeline
 		public string CfgName { get; set; }
 		public string CfgPath { get; set; }
 
-		public MGCB(JObject conf, string rootPath)
-		{   
+		public MGCB(JObject conf, string MGCBConfigPath)
+		{
 			// Read mgcb config file
 			
-			var name = rootPath.TrimEnd('/', '\\') + "/" + conf["path"].ToString();  // path to Content.mgcb
-			
-			if(!File.Exists(name))
-			{
-				throw new Exception($"{name} file not found!");
-			}
+			Console.WriteLine("Reading MGCB config " + MGCBConfigPath);
 
-			Console.WriteLine("Reading MGCB config " + name);
-
-			CfgName = name;
-			CfgPath = Path.GetDirectoryName(name);
+			CfgName = MGCBConfigPath;
+			CfgPath = Path.GetDirectoryName(MGCBConfigPath);
 			string line;
 			var isItemSection = false;
 			Item it = null;
 			Header = new StringBuilder();
 			Items = new Dictionary<string, Item>();
 
-			using(StreamReader file = new StreamReader(name))
+			using(StreamReader file = new StreamReader(MGCBConfigPath))
 			{
 				while((line = file.ReadLine()) != null)
 				{

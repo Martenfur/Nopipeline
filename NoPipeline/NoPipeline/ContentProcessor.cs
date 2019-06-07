@@ -33,8 +33,8 @@ namespace NoPipeline
 				}
 				catch
 				{
-					Console.WriteLine($"key 'path' not exist in  {sectionName} ");
-					throw new Exception($"key 'path' not exist in  {sectionName} ");
+					Console.WriteLine($"Key 'path' doesn't exist in  {sectionName}!");
+					throw new Exception($"Key 'path' doesn't exist in  {sectionName}!");
 				}
 				
 				Console.WriteLine("Rule: " + path);
