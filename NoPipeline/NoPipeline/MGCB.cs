@@ -66,6 +66,7 @@ namespace NoPipeline
 							{
 								Path = line.Substring(7)
 							};
+							it.FixPath();
 							Items.Add(it.Path, it); // add to the dictionary
 							Console.WriteLine("Reading " + it.Path);
 						}

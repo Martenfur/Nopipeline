@@ -52,16 +52,16 @@ generate MGCB config. Inside it looks like this:
 {
 	"content": 
 	{
-		"Textures": 
+		"textures": 
 		{
-			"path": "Graphics/Textures/*.png",
+			"path": "Textures/*.png",
 			"recursive": "True",
 			"action": "build",
 			"importer": "TextureImporter",
 			"processor": "TextureProcessor",
 			"processorParam": 
 			{
-				"ColorKeyColor: "255,0,255,255",
+				"ColorKeyColor": "255,0,255,255",
 				"ColorKeyEnabled": "True",
 				"GenerateMipmaps": "False",
 				"PremultiplyAlpha": "True",
@@ -70,7 +70,7 @@ generate MGCB config. Inside it looks like this:
 				"TextureFormat": "Color",
 			}
 		},
-		"SpecificFile": 
+		"specificFile": 
 		{
 			"path": "Path/To/File/specificFile.txt",
 			"recursive": "False",
@@ -79,8 +79,8 @@ generate MGCB config. Inside it looks like this:
 	}
 }
 ```
-NPL config is essentially a JSON. Config above has two file groups: `Textures` 
-and `SpecificFile`. Each file group describes one specific resource type. 
+NPL config is essentially a JSON. Config above has two file groups: `textures` 
+and `specificFile`. Each file group describes one specific resource type. 
 File groups can contain whole directories or single files.
 
 
@@ -130,6 +130,10 @@ all the paths listed in `watch` are relative to the main `path`, so final paths
 will look like this: `Graphics/Default/*.png`.
 
 
+You can also take a look at a sample config `SampleContent.npl`, which is included
+with the program.
+
+
 With NPL config done, save it in the same directory as MGCB config and name it
 the same as it. So, if your MGCB config is named `Content/Content.mgcb`, your
 NPL config should be `Content/Content.npl`
@@ -157,7 +161,7 @@ And from this point you can start forgetting about Pipeline Tool. : - )
 
 If you want more seamless pipeline-forgetting experience, you can check out 
 [Monofoxe Engine](https://bitbucket.org/gnFur/monofoxe/src), which has NoPipeline
-integrated out of the box.
+integrated out of the box (COMING SOON!).
 
 ## All the other stuffs. 
 

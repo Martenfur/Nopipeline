@@ -1,46 +1,58 @@
 {
-  "content": 
-  {
-    "contentList": 
-    {
-      "path": "folder/*.mcgb",
-      "recursive": "False",
-      "action": "build",
-      "importer": "AssetInfoImporter",
-      "processor": "PassThroughProcessor"
-    },
-    "music": 
-    {
-      "path": "Audio/Music/*.ogg",
-      "recursive": "True",
-      "action": "copy",
-      "processorParam": 
-      {
-        "Debug": "True",
-        "OtherStuff": "thgins"
-      }
-    },
-    "spriteGroup": 
-    {
-      "path": "Graphics/Default/*.spritegroup",
-      "recursive": "True",
-      "action": "build",
-      "importer": "SpriteGroupImporter",
-      "processor": "SpriteGroupProcessor",
-      "watch": 
-      [
-        "Default/*.png",
-        "Default/*.json",
-        "Special/*"
-      ]
-    },
-    "specificFile": 
-    {
-      "path": "Path/To/File/specificFile.txt",
-      "action": "build",
-      "importer": "SpriteGroupImporter",
-      "processor": "SpriteGroupProcessor"
-    }
-
-  }
+	"content":
+	{
+		"contentList":
+		{
+			"path": "Content.mgcb",
+			"recursive": "False",
+			"action": "build",
+			"importer": "AssetInfoImporter",
+			"processor": "PassThroughProcessor"
+		},
+		"music":
+		{
+			"path": "Audio/Music/*.ogg",
+			"recursive": "True",
+			"action": "copy"
+		},
+		"fonts":
+		{
+			"path": "Fonts/*.spritefont",
+			"recursive": "True",
+			"action": "build",
+			"importer": "FontDescriptionImporter",
+			"processor": "FontDescriptionProcessor"
+		},
+		"textures":
+		{
+			"path": "Textures/*.png",
+			"recursive": "True",
+			"action": "build",
+			"importer": "TextureImporter",
+			"processor": "TextureProcessor",
+			"processorParam":
+			{
+				"ColorKeyColor": "255,0,255,255",
+				"ColorKeyEnabled": "True",
+				"GenerateMipmaps": "False",
+				"PremultiplyAlpha": "True",
+				"ResizeToPowerOfTwo": "False",
+				"MakeSquare": "False",
+				"TextureFormat": "Color"
+			}
+		},
+		"spriteGroups":
+		{
+			"path": "Graphics/*.spritegroup",
+			"recursive": "True",
+			"action": "build",
+			"importer": "SpriteGroupImporter",
+			"processor": "SpriteGroupProcessor",
+			"watch":
+			[
+				"Default/*.png",
+				"Default/*.json"
+			]
+		}
+	}
 }

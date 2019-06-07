@@ -48,20 +48,20 @@ namespace NoPipeline
 					var searchOpt = SearchOption.TopDirectoryOnly;
 					if(section.ContainsKey("recursive"))
 					{
-						searchOpt = (section["recursive"].ToString() == "True") ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+						searchOpt = (section["recursive"].ToString().ToLower() == "true") ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 					}
 					files = Directory.GetFiles($"{rootPath}{filePath}", fileName, searchOpt);
 				}
 				catch
 				{
-					Console.WriteLine($"{section["path"].ToString()} not found");
+					Console.WriteLine($"Error reading files from {rootPath}{filePath}");
 				}
 
 				foreach(var file in files)
 				{
 					var name = file.Remove(0, rootPath.Length).Replace('\\', '/');
 					var it = new Item() { Path = name };
-
+					it.FixPath();
 					Console.WriteLine("    Reading " + name);
 
 					foreach(var sect in section)

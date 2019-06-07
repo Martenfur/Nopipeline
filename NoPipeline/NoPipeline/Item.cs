@@ -47,6 +47,7 @@ namespace NoPipeline
 		public override string ToString()
 		{
 			var builder = new StringBuilder();
+			FixPath();
 			builder.Append($"#begin {Path.Replace('\\', '/')}{System.Environment.NewLine}");
 			foreach(var parameter in Parameters)
 			{
@@ -60,18 +61,27 @@ namespace NoPipeline
 			return builder.ToString();
 		}
 
+		public void FixPath()
+		{
+			if (Path.StartsWith("/")) // MGCB will melt if the path will start with a slash.
+			{
+				Path = Path.Substring(1);
+			}
+		}
+
 		public void Add(string param, JToken value)
 		{
-			switch(param)
+			switch(param.ToLower())
 			{
 				case "path":
 					Path = value.ToString().Replace('\\', '/');
+					FixPath();
 					break;
 				case "recursive":
-					Recursive = (value.ToString() == "True");
+					Recursive = (value.ToString().ToLower() == "true");
 					break;
 				case "action":
-					Action = $"/{value.ToString()}:{Path.Replace('\\', '/')}";
+					Action = $"/{value.ToString()}:{Path.Replace('\\', '/')}".ToLower();
 					break;
 				case "watch":
 					Watch = value.ToObject<List<string>>();
