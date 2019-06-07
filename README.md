@@ -1,6 +1,6 @@
 # NoPipeline
 
-![NoPipeline](C:/D/_Projects/NoPipeline/NoPipeline/pics/NoPipeline.png)
+![NoPipeline](/pics/NoPipeline.png)
 
 You know, Monogame is nice. C# cross-platform game framework which is 
 a pretty nice base for an engine or a game.
@@ -47,10 +47,9 @@ the `.mgcb` config and will leave a perfectly valid config after itself.
 
 ## Now we're talking. How do I integrate this thing in my project?
 
-*Specially trained foxes are working on this paragraph*
-First of all, install the [latest relase](http://put_a_link_here) of NoPipeline.
+First of all, install the [latest relase (COMING SOON)](http://put_a_link_here) of NoPipeline.
 After that, you will need a NPL config. NPL config is what NoPipeline uses to 
-geterate MGCB config. Inside it looks like this:
+generate MGCB config. Inside it looks like this:
 
 
 ```
@@ -84,17 +83,17 @@ geterate MGCB config. Inside it looks like this:
 	}
 }
 ```
-NPL config is essentially JSON. Config above has two file groups: `Textures` 
-and `SpecifiFile`. Each file group describes one specific resource type. 
-File groups can contain whole directories or specific files.
+NPL config is essentially a JSON. Config above has two file groups: `Textures` 
+and `SpecificFile`. Each file group describes one specific resource type. 
+File groups can contain whole directories or single files.
 
 
-Let's look at each parameter:
-- `path` is a path to resource files relative to main Content folder. Here
-are some examples:
+Let's look at an each parameter:
+- `path` is a path to the resource files relative to the main Content folder. 
+Here are some examples:
 	- `Graphics/Textures/texture.png` will grab only `texture.png` file.
 	- `Graphics/Textures/*.png` will grab any `.png` file.
-	- `Graphics/Textures/*` will grab any file in `Textures` directory.
+	- `Graphics/Textures/*` will grab any file in the `Textures` directory.
 - `resursive` tells NoPipeline to include resource files from subdirectories.
 For example, if set to `True`, and the `path` is `Graphics/Textures/*.png`,
 files from `Graphics/Textures/Subdir/` will be grabbed as well. If set to 
@@ -160,6 +159,9 @@ Insert `<Import Project="$(MSBuildExtensionsPath)\NoPipeline\NoPipeline.targets"
 
 And from this point you can start forgetting about Pipeline Tool. : - )
 
+If you want more seamless pipeline-forgetting experience, you can check out 
+[Monofoxe Engine](https://bitbucket.org/gnFur/monofoxe/src), which has NoPipeline
+integrated out of the box.
 
 ## All the other stuffs. 
 
@@ -171,4 +173,4 @@ Huge thanks to [MirrorOfSun](https://github.com/MirrorOfSUn), who wrote most of
 the code.
 
 
-*Don't forget to per your foxes.*
+*Don't forget to pet your foxes.*
