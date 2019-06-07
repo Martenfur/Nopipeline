@@ -3,25 +3,21 @@
 ![NoPipeline](/pics/NoPipeline.png)
 
 You know, Monogame is nice. C# cross-platform game framework which is 
-a pretty nice base for an engine or a game.
+a pretty good base for an engine or a game.
 
 
-What certainly is not nice - it's Pipeline Tool. 
+What certainly is not nice - their Pipeline Tool. 
 For some reason, the only Monogame resource manager is a total pain in 
-the ass to work with: clunky external GUI, manual resource adding, no 
-ability to add whole directories. And of course, bugs. Countless, 
-countless bugs.
+the ass to work with: clunky external GUI, no ability to add whole directories. 
+And of course, bugs. Countless, countless bugs.
 
 
-If only there was some solution, which would make you forget Pipeline Tool 
-even exists. Wait a minute, NoPipeline does exactly this!
+## So what shall we do about all this?
 
-
-## So what does it do, exactly?
-
-NoPipeline is an addon for Pipeline Tool, which generates and updates 
-.mgcb config for you. You can safely add, delete and move around resource 
-files right in Explorer - NoPipeline will do the rest for you.
+Fear not - NoPipeline comes to the rescue. It's an addon for Pipeline Tool, 
+which generates and updates `.mgcb` config for you. You can safely add, delete 
+and move around resource files right in Explorer - NoPipeline will do the rest 
+for you.
 
 
 Additionally, you can make resource files watch other files! Let's say, you got
