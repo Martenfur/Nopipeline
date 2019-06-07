@@ -5,24 +5,37 @@ using Newtonsoft.Json.Linq;
 
 namespace NoPipeline
 {
-	/*
- * Item object represents a rule in the config file or section of MGCB file
- * Parameters:
- *   Param:List of strings - contains all item's configuration parameters to generate MGCB file
- *   Name:String - file name
- *   Recursive:Bool - True=search files recursively
- *   Watch:List of strings - contains masks of files
- * Methods:
- *   ToString() - generate recod of the item to store in MGCB file
- *   Add() - add a new value of Item
- */
+
+	/// <summary>
+	/// Item object represents a rule in the config file or section of MGCB file.
+	/// </summary>
 	public class Item
 	{
-		public List<string> Parameters { get; set; }
+		
+		/// <summary>
+		/// Path to the files. Can contain windcards.
+		/// </summary>
 		public string Path { get; set; }
+		
+		/// <summary>
+		/// If true, file search will be resursive.
+		/// </summary>
 		public bool Recursive { get; set; }
+		
+		/// <summary>
+		/// List of watch entries.
+		/// </summary>
 		public List<string> Watch { get; set; }
+		
+		/// <summary>
+		/// File action. Can be build or copy.
+		/// </summary>
 		public string Action { get; set; } = "";
+
+		/// <summary>
+		/// List of processor parameters.
+		/// </summary>
+		public List<string> Parameters { get; set; }
 
 		public Item()
 		{
@@ -39,7 +52,7 @@ namespace NoPipeline
 			{
 				builder.Append(parameter + System.Environment.NewLine);
 			}
-			if (Action != "")
+			if (Action != "") // Action ALWAYS should come last.
 			{
 				builder.Append(Action + System.Environment.NewLine + System.Environment.NewLine);
 			}

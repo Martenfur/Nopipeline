@@ -82,8 +82,11 @@ namespace NoPipeline
 				
 		}
 
+		/// <summary>
+		/// Checks if content files exist and checks watch files.
+		/// </summary>
 		public void ContentCheck()
-		{   // check all items exist
+		{
 			var ItemsCheck = new Dictionary<string, Item>();
 
 			foreach(Item it in Items.Values)
@@ -94,9 +97,8 @@ namespace NoPipeline
 					// check if "watch" present
 					
 					var relativeItemPath =  CfgPath + "/" + Path.GetDirectoryName(it.Path);
+					
 
-					
-					
 					foreach(var checkWildcard in it.Watch)
 					{
 						Console.WriteLine("Checking watch for " + checkWildcard);
@@ -140,16 +142,18 @@ namespace NoPipeline
 			Items = ItemsCheck;
 		}
 
+		/// <summary>
+		/// Saves resulting config.
+		/// </summary>
 		public void Save()
 		{ 
-			// save config file
 			Console.WriteLine("Saving new config.");
 			using(var file = new StreamWriter(CfgName))
 			{
 				// header
 				file.Write(Header.ToString());
-				// items
 
+				// items
 				foreach(Item it in Items.Values)
 				{
 					file.Write(it.ToString());
