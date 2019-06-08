@@ -2,10 +2,10 @@
 <Project InitialTargets="NoPipeline" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Target Name="NoPipeline">
 		<ItemGroup>
-			<ContentReferences Include="@(MonoGameContentReference)"/>
+			<NPLContentReferences Include="@(MonoGameContentReference)"/>
 		</ItemGroup>
 
-		<Exec Command="NoPipeline.exe %(ContentReferences.FullPath)" 
+		<Exec Command="NoPipeline.exe %(NPLContentReferences.FullPath)" 
 					WorkingDirectory="$(MSBuildProgramFiles32)\NoPipeline\"/>
 	</Target>
 </Project>

@@ -1,7 +1,7 @@
-SetCompressor /SOLID /FINAL lzma
+﻿SetCompressor /SOLID /FINAL lzma
 
 !define APPNAME "NoPipeline"
-!define INSTALLERVERSION "1.0.0.0"
+!define INSTALLERVERSION "1.0.0.1"
 
 !define MUI_ICON "pics\icon.ico"
 !define MUI_UNICON "pics\icon.ico"
@@ -44,7 +44,7 @@ RequestExecutionLevel admin
 ; UI stuff.
 
 
-; The stuff to install
+; The stuff to install.
 Section "Main" Main
   SectionIn RO
 
@@ -64,7 +64,7 @@ Section "Main" Main
 SectionEnd
 
 
-Function .onInit 
+Function .onInit
   IntOp $0 $0 | ${SF_RO}
   IntOp $0 ${SF_SELECTED} | ${SF_RO}
 FunctionEnd
