@@ -43,7 +43,7 @@ the `.mgcb` config and will leave a perfectly valid config after itself.
 
 ## Now we're talking. How do I integrate this thing in my project?
 
-First of all, install the [latest relase](https://github.com/gnFur/NoPipeline/releases/tag/1.0.0.1) of NoPipeline.
+First of all, install the [latest release](https://github.com/gnFur/NoPipeline/releases/tag/1.0.0.1) of NoPipeline.
 After that, you will need a NPL config. NPL config is what NoPipeline uses to 
 generate MGCB config. Inside it looks like this:
 
