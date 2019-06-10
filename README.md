@@ -90,7 +90,7 @@ Here are some examples:
 	- `Graphics/Textures/texture.png` will grab only `texture.png` file.
 	- `Graphics/Textures/*.png` will grab any `.png` file.
 	- `Graphics/Textures/*` will grab any file in the `Textures` directory.
-- `resursive` tells NoPipeline to include resource files from subdirectories.
+- `recursive` tells NoPipeline to include resource files from subdirectories.
 For example, if set to `True`, and the `path` is `Graphics/Textures/*.png`,
 files from `Graphics/Textures/Subdir/` will be grabbed as well. If set to 
 `False`, they will be ignored.
