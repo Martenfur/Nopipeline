@@ -81,12 +81,13 @@ namespace NoPipeline
 					Recursive = (value.ToString().ToLower() == "true");
 					break;
 				case "action":
-					Action = $"/{value.ToString()}:{Path.Replace('\\', '/')}".ToLower();
+					Action = $"/{value.ToString()}:{Path.Replace('\\', '/')}";
 					break;
 				case "watch":
 					Watch = value.ToObject<List<string>>();
 					break;
 				default:
+					System.Console.WriteLine("Custom param: " + value.ToString());
 					Parameters.Add($"/{param}:{value.ToString().Replace('\\', '/')}");
 					break;
 			}
