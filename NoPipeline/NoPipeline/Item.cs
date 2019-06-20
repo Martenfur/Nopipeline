@@ -87,7 +87,6 @@ namespace NoPipeline
 					Watch = value.ToObject<List<string>>();
 					break;
 				default:
-					System.Console.WriteLine("Custom param: " + value.ToString());
 					Parameters.Add($"/{param}:{value.ToString().Replace('\\', '/')}");
 					break;
 			}
