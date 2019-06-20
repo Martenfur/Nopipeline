@@ -9,6 +9,7 @@
 
 !include "Sections.nsh"
 !include "MUI2.nsh"
+!include "FileAssociation.nsh"
 
 !define MUI_WELCOMEFINISHPAGE_BITMAP "pics\panel.bmp"
 
@@ -53,6 +54,7 @@ Section "Main" Main
   File /r '..\NoPipeline\NoPipeline\bin\Release\*.exe'
   File /r '..\NoPipeline\NoPipeline\bin\Release\*.dll'
   File /r '..\NoPipeline\NoPipeline\bin\Release\*.npl'
+  ${registerExtension} "$INSTDIR\${APPNAME}.exe" ".npl" "NoPipeline Config"
 
   ; Installing .targets file.
   SetOutPath '${MSBuildInstallDir}'
@@ -73,6 +75,7 @@ FunctionEnd
 ; Uninstaller Section
 
 Section "Uninstall"
+  ${unregisterExtension} ".npl" "NoPipeline Config"
   Delete "$INSTDIR\Uninstall.exe"
   RMDir /r "$INSTDIR"
   RMDir /r "${MSBuildInstallDir}"
