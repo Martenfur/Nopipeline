@@ -121,8 +121,11 @@ namespace NoPipeline
 
 						foreach(var f in files)
 						{
+							Console.WriteLine("Checking " + f);
 							DateTime f_lastModified = File.GetLastWriteTime(f);
-							if(lastModified < f_lastModified)
+							DateTime f_creationTime = File.GetCreationTime(f);
+
+							if (lastModified < f_lastModified || lastModified < f_creationTime)
 							{
 								// change datetime required
 								Console.WriteLine("Modifying: " + f);
