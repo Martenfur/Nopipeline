@@ -4,8 +4,7 @@
 		<ItemGroup>
 			<NPLContentReferences Include="@(MonoGameContentReference)"/>
 		</ItemGroup>
-
-		<Exec Command="NoPipeline.exe %(NPLContentReferences.FullPath)" 
+		<Exec Command="NoPipeline.exe &quot;%(NPLContentReferences.FullPath)&quot;" 
 					WorkingDirectory="$(MSBuildProgramFiles32)\NoPipeline\"/>
 	</Target>
 </Project>
