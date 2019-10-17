@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Content.cs" />
     <Compile Include="ContentProcessor.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="MGCB.cs" />

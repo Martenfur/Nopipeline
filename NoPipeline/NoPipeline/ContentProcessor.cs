@@ -14,24 +14,24 @@ namespace NoPipeline
 	class ContentProcessor
 	{
 
-		public ContentProcessor(MGCB content, string configPath)
+		public ContentProcessor(Content content, string configPath)
 		{
 			var config = JObject.Parse(File.ReadAllText(configPath, Encoding.UTF8));
 			var rootDir = Path.GetDirectoryName(configPath) + "/";
 
 			JObject contentJson = config["content"] as JObject;
 			
-			ParseReferences(config);
+			ParseReferences(config, content);
 
 			Console.WriteLine("Reading NPL config.");
 
 			foreach(var item in contentJson)
 			{
-				// Read section
+				// Read section.
 				string sectionName = item.Key;
 				JObject section = item.Value as JObject;
 				
-				// read item
+				// Read item.
 				string path;
 				try
 				{
@@ -66,8 +66,8 @@ namespace NoPipeline
 				foreach(var file in files)
 				{
 					var name = file.Remove(0, rootDir.Length).Replace('\\', '/');
-					var it = new Item() { Path = name };
-					it.FixPath();
+					var newItem = new Item() { Path = name };
+					newItem.FixPath();
 					Console.WriteLine("    Reading " + name);
 
 					foreach(var sect in section)
@@ -81,28 +81,28 @@ namespace NoPipeline
 							JObject processorParam = section["processorParam"] as JObject;
 							foreach(var pp in processorParam)
 							{
-								it.Add("processorParam", $"{pp.Key}={pp.Value}");
+								newItem.Add("processorParam", $"{pp.Key}={pp.Value}");
 							}
 						}
 						else
 						{
-							it.Add(sect.Key, sect.Value);
+							newItem.Add(sect.Key, sect.Value);
 						}
 					}
-					Console.WriteLine(content.Items.ContainsKey(it.Path) + " : " + it.Path);
+					Console.WriteLine(content.Items.ContainsKey(newItem.Path) + " : " + newItem.Path);
 					Console.WriteLine(content.Items.Count);
 					foreach(var i in content.Items)
 					{
 						Console.WriteLine("Item: " + i.Value.Path);
 					}
 
-					if (content.Items.ContainsKey(it.Path))
+					if (content.Items.ContainsKey(newItem.Path))
 					{
-						content.Items[it.Path] = it;
+						content.Items[newItem.Path] = newItem;
 					}
 					else
 					{
-						content.Items.Add(it.Path, it);
+						content.Items.Add(newItem.Path, newItem);
 					}
 				}
 
@@ -113,12 +113,18 @@ namespace NoPipeline
 		}
 
 
-		void ParseReferences(JObject config)
+		void ParseReferences(JObject config, Content content)
 		{
 			var contentJson = config["references"];
 			foreach (var item in contentJson)
 			{
 				Console.WriteLine("Reference: " + item);
+				var reference = Path.GetFullPath(Environment.ExpandEnvironmentVariables(item.ToString()));
+
+				if (!content.References.Contains(reference))
+				{
+					content.References.Add(reference);
+				}
 			}
 		}
 	}

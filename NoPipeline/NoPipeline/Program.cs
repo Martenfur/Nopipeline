@@ -62,7 +62,7 @@ namespace NoPipeline
 
 			// Create ContentProcessor object to read config file and update content
 			// content will be overwrited from config file.
-			var cp = new ContentProcessor(content, NPLConfigPath);
+			var cp = new ContentProcessor(content.Content, NPLConfigPath);
 
 			// Check all rules in content object and update timestamp of files if required.
 			content.ContentCheck();

@@ -31,15 +31,11 @@ namespace NoPipeline
 	 */
 	public class MGCB
 	{
-		public StringBuilder Header { get; set; }
-		public Dictionary<string, Item> Items { get; set; }
-		public string CfgName { get; set; }
-		public string CfgPath { get; set; }
+		public string CfgName;
+		public string CfgPath;
 
-		public List<string> References;
-
-		const string _referenceKeyword = "/reference";
-
+		public Content Content;
+	
 		public MGCB(string MGCBConfigPath)
 		{
 			// Read mgcb config file
@@ -52,9 +48,8 @@ namespace NoPipeline
 			string line;
 			var collectionState = CollectionStates.Settings;
 			Item it = null;
-			Header = new StringBuilder();
-			Items = new Dictionary<string, Item>(StringComparer.OrdinalIgnoreCase);
-			References = new List<string>();
+			
+			Content = new Content();
 
 			using (StreamReader file = new StreamReader(MGCBConfigPath))
 			{
@@ -62,34 +57,38 @@ namespace NoPipeline
 				{
 					if (collectionState == CollectionStates.Settings)
 					{
-						if (line.StartsWith(_referenceKeyword))
+						if (line.StartsWith(ContentStructure.ReferenceKeyword))
 						{
 							collectionState = CollectionStates.References;
 						}
 						else
 						{
-							if (line.StartsWith("#begin"))
+							if (line.StartsWith(ContentStructure.ContentBeginKeyword))
 							{
 								collectionState = CollectionStates.Content;
 							}
 							else
 							{
-								Header.AppendLine(line);
+								Content.Header.AppendLine(line);
 							}
 						}
 					}
 
 					if (collectionState == CollectionStates.References)
 					{
-						if (line.StartsWith("#begin"))
+						if (line.StartsWith(ContentStructure.ContentBeginKeyword))
 						{
 							collectionState = CollectionStates.Content;   // found first begin - stop collecting header
 						}
 						else
 						{
-							if (line.StartsWith(_referenceKeyword))
+							if (line.StartsWith(ContentStructure.ReferenceKeyword))
 							{
-								References.Add(line.Substring(_referenceKeyword.Length));
+								var reference = line.Substring(ContentStructure.ReferenceKeyword.Length);
+								if (!Content.References.Contains(reference))
+								{
+									Content.References.Add(reference);
+								}
 								Console.WriteLine("Reading reference");
 							}
 						}
@@ -98,16 +97,16 @@ namespace NoPipeline
 
 					if (collectionState == CollectionStates.Content)
 					{
-						if (line.StartsWith("#begin"))
+						if (line.StartsWith(ContentStructure.ContentBeginKeyword))
 						{
 							it = new Item
 							{
-								Path = line.Substring(7)
+								Path = line.Substring(ContentStructure.ContentBeginKeyword.Length + 1)
 							};
-							if (!Items.ContainsKey(it.Path))
+							if (!Content.Items.ContainsKey(it.Path))
 							{
 								it.FixPath();
-								Items.Add(it.Path, it); // add to the dictionary
+								Content.Items.Add(it.Path, it); // add to the dictionary
 								Console.WriteLine("Reading " + it.Path);
 							}
 						}
@@ -119,7 +118,7 @@ namespace NoPipeline
 				}
 			}
 
-			Console.WriteLine("Finished reading MGCB config! Got " + Items.Count + " items.");
+			Console.WriteLine("Finished reading MGCB config! Got " + Content.Items.Count + " items.");
 			Console.WriteLine();
 
 		}
@@ -131,11 +130,12 @@ namespace NoPipeline
 		{
 			var ItemsCheck = new Dictionary<string, Item>();
 
-			foreach (Item it in Items.Values)
+			foreach (Item it in Content.Items.Values)
 			{
-				
+				// Don't include if the file doesn't exist.
 				if (File.Exists(Path.Combine(CfgPath, it.Path)))
-				{  // not exists - not include to Items
+				{
+					
 					DateTime lastModified = File.GetLastWriteTime(CfgPath + it.Path);
 					// check if "watch" present
 
@@ -185,7 +185,7 @@ namespace NoPipeline
 					Console.WriteLine(it.Path + " doesn't exist anymore. Removing it from the config.");
 				}
 			}
-			Items = ItemsCheck;
+			Content.Items = ItemsCheck;
 		}
 
 		/// <summary>
@@ -196,13 +196,19 @@ namespace NoPipeline
 			Console.WriteLine("Saving new config.");
 			using (var file = new StreamWriter(CfgName))
 			{
-				// header
-				file.Write(Header.ToString());
+				// Header.
+				file.Write(Content.Header.ToString());
 
-				// items
-				foreach (Item it in Items.Values)
+				// References.
+				foreach (var reference in Content.References)
 				{
-					file.Write(it.ToString());
+					file.WriteLine(ContentStructure.ReferenceKeyword + reference);
+				}
+
+				// Items.
+				foreach (var item in Content.Items.Values)
+				{
+					file.Write(item.ToString());
 				}
 
 			}
