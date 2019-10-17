@@ -40,7 +40,7 @@ namespace NoPipeline
 
 		const string _referenceKeyword = "/reference";
 
-		public MGCB(JObject conf, string MGCBConfigPath)
+		public MGCB(string MGCBConfigPath)
 		{
 			// Read mgcb config file
 
@@ -48,6 +48,7 @@ namespace NoPipeline
 
 			CfgName = MGCBConfigPath;
 			CfgPath = Path.GetDirectoryName(MGCBConfigPath);
+			
 			string line;
 			var collectionState = CollectionStates.Settings;
 			Item it = null;
@@ -132,12 +133,13 @@ namespace NoPipeline
 
 			foreach (Item it in Items.Values)
 			{
-				if (File.Exists(CfgPath + "/" + it.Path))
+				
+				if (File.Exists(Path.Combine(CfgPath, it.Path)))
 				{  // not exists - not include to Items
-					DateTime lastModified = File.GetLastWriteTime(CfgPath + "/" + it.Path);
+					DateTime lastModified = File.GetLastWriteTime(CfgPath + it.Path);
 					// check if "watch" present
 
-					var relativeItemPath = CfgPath + "/" + Path.GetDirectoryName(it.Path);
+					var relativeItemPath = Path.Combine(CfgPath + Path.GetDirectoryName(it.Path));
 
 
 					foreach (var checkWildcard in it.Watch)
@@ -169,7 +171,7 @@ namespace NoPipeline
 							{
 								// change datetime required
 								Console.WriteLine("Modifying: " + f);
-								File.SetLastWriteTime(CfgPath + "/" + it.Path, DateTime.Now);
+								File.SetLastWriteTime(CfgPath + it.Path, DateTime.Now);
 								break;
 							}
 						}
@@ -180,7 +182,7 @@ namespace NoPipeline
 				}
 				else
 				{
-					Console.WriteLine(it.Path + " doesn't exists anymore. Removing it from the config.");
+					Console.WriteLine(it.Path + " doesn't exist anymore. Removing it from the config.");
 				}
 			}
 			Items = ItemsCheck;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using Newtonsoft.Json.Linq;
 
 namespace NoPipeline
@@ -13,19 +14,22 @@ namespace NoPipeline
 	class ContentProcessor
 	{
 
-		public ContentProcessor(JObject config, MGCB content, string rootPath)
+		public ContentProcessor(MGCB content, string configPath)
 		{
+			var config = JObject.Parse(File.ReadAllText(configPath, Encoding.UTF8));
+			var rootDir = Path.GetDirectoryName(configPath) + "/";
+
 			JObject contentJson = config["content"] as JObject;
 			
 			ParseReferences(config);
 
 			Console.WriteLine("Reading NPL config.");
 
-			foreach(var itm in contentJson)
+			foreach(var item in contentJson)
 			{
 				// Read section
-				string sectionName = itm.Key;
-				JObject section = itm.Value as JObject;
+				string sectionName = item.Key;
+				JObject section = item.Value as JObject;
 				
 				// read item
 				string path;
@@ -48,20 +52,20 @@ namespace NoPipeline
 				try
 				{
 					var searchOpt = SearchOption.TopDirectoryOnly;
-					if(section.ContainsKey("recursive"))
+					if (section.ContainsKey("recursive"))
 					{
 						searchOpt = (section["recursive"].ToString().ToLower() == "true") ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 					}
-					files = Directory.GetFiles($"{rootPath}{filePath}", fileName, searchOpt);
+					files = Directory.GetFiles(Path.Combine(rootDir, filePath), fileName, searchOpt);
 				}
-				catch
+				catch(Exception e)
 				{
-					Console.WriteLine($"Error reading files from {rootPath}{filePath}");
+					Console.WriteLine($"Error reading files from {rootDir}{filePath}: " + e.Message);
 				}
 
 				foreach(var file in files)
 				{
-					var name = file.Remove(0, rootPath.Length).Replace('\\', '/');
+					var name = file.Remove(0, rootDir.Length).Replace('\\', '/');
 					var it = new Item() { Path = name };
 					it.FixPath();
 					Console.WriteLine("    Reading " + name);
