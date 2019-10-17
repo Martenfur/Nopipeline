@@ -13,10 +13,12 @@ namespace NoPipeline
 	class ContentProcessor
 	{
 
-		public ContentProcessor(JObject conf, MGCB content, string rootPath)
+		public ContentProcessor(JObject config, MGCB content, string rootPath)
 		{
-			JObject contentJson = conf["content"] as JObject;
+			JObject contentJson = config["content"] as JObject;
 			
+			ParseReferences(config);
+
 			Console.WriteLine("Reading NPL config.");
 
 			foreach(var itm in contentJson)
@@ -66,11 +68,11 @@ namespace NoPipeline
 
 					foreach(var sect in section)
 					{
-						if(sect.Key == "path")
+						if (sect.Key == "path")
 						{ // path - already get - ignore
 							continue;
 						}
-						if(sect.Key == "processorParam")
+						if (sect.Key == "processorParam")
 						{ // read processor's parameters
 							JObject processorParam = section["processorParam"] as JObject;
 							foreach(var pp in processorParam)
@@ -83,8 +85,14 @@ namespace NoPipeline
 							it.Add(sect.Key, sect.Value);
 						}
 					}
+					Console.WriteLine(content.Items.ContainsKey(it.Path) + " : " + it.Path);
+					Console.WriteLine(content.Items.Count);
+					foreach(var i in content.Items)
+					{
+						Console.WriteLine("Item: " + i.Value.Path);
+					}
 
-					if(content.Items.ContainsKey(it.Path))
+					if (content.Items.ContainsKey(it.Path))
 					{
 						content.Items[it.Path] = it;
 					}
@@ -98,6 +106,16 @@ namespace NoPipeline
 
 			Console.WriteLine("Finished reading NPL config!");
 			Console.WriteLine();
+		}
+
+
+		void ParseReferences(JObject config)
+		{
+			var contentJson = config["references"];
+			foreach (var item in contentJson)
+			{
+				Console.WriteLine("Reference: " + item);
+			}
 		}
 	}
 }

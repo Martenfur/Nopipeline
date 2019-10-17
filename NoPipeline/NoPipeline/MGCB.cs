@@ -1,11 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Newtonsoft.Json.Linq;
 
 namespace NoPipeline
 {
+	public enum CollectionStates
+	{
+		Settings,
+		References,
+		Content
+	}
+
 	/*
 	 * MGCB class - represents the mgcb configuration file
 	 * Input:
@@ -29,46 +36,79 @@ namespace NoPipeline
 		public string CfgName { get; set; }
 		public string CfgPath { get; set; }
 
+		public List<string> References;
+
+		const string _referenceKeyword = "/reference";
+
 		public MGCB(JObject conf, string MGCBConfigPath)
 		{
 			// Read mgcb config file
-			
+
 			Console.WriteLine("Reading MGCB config " + MGCBConfigPath);
 
 			CfgName = MGCBConfigPath;
 			CfgPath = Path.GetDirectoryName(MGCBConfigPath);
 			string line;
-			var isItemSection = false;
+			var collectionState = CollectionStates.Settings;
 			Item it = null;
 			Header = new StringBuilder();
-			Items = new Dictionary<string, Item>();
+			Items = new Dictionary<string, Item>(StringComparer.OrdinalIgnoreCase);
+			References = new List<string>();
 
-			using(StreamReader file = new StreamReader(MGCBConfigPath))
+			using (StreamReader file = new StreamReader(MGCBConfigPath))
 			{
-				while((line = file.ReadLine()) != null)
+				while ((line = file.ReadLine()) != null)
 				{
-					if(!isItemSection)
+					if (collectionState == CollectionStates.Settings)
 					{
-						if(line.StartsWith("#begin"))
+						if (line.StartsWith(_referenceKeyword))
 						{
-							isItemSection = true;   // found first begin - stop collecting header
+							collectionState = CollectionStates.References;
 						}
 						else
 						{
-							Header.AppendLine(line);
+							if (line.StartsWith("#begin"))
+							{
+								collectionState = CollectionStates.Content;
+							}
+							else
+							{
+								Header.AppendLine(line);
+							}
 						}
 					}
-					if(isItemSection)
+
+					if (collectionState == CollectionStates.References)
 					{
-						if(line.StartsWith("#begin"))
+						if (line.StartsWith("#begin"))
+						{
+							collectionState = CollectionStates.Content;   // found first begin - stop collecting header
+						}
+						else
+						{
+							if (line.StartsWith(_referenceKeyword))
+							{
+								References.Add(line.Substring(_referenceKeyword.Length));
+								Console.WriteLine("Reading reference");
+							}
+						}
+					}
+
+
+					if (collectionState == CollectionStates.Content)
+					{
+						if (line.StartsWith("#begin"))
 						{
 							it = new Item
 							{
 								Path = line.Substring(7)
 							};
-							it.FixPath();
-							Items.Add(it.Path, it); // add to the dictionary
-							Console.WriteLine("Reading " + it.Path);
+							if (!Items.ContainsKey(it.Path))
+							{
+								it.FixPath();
+								Items.Add(it.Path, it); // add to the dictionary
+								Console.WriteLine("Reading " + it.Path);
+							}
 						}
 						else
 						{
@@ -80,7 +120,7 @@ namespace NoPipeline
 
 			Console.WriteLine("Finished reading MGCB config! Got " + Items.Count + " items.");
 			Console.WriteLine();
-				
+
 		}
 
 		/// <summary>
@@ -90,17 +130,17 @@ namespace NoPipeline
 		{
 			var ItemsCheck = new Dictionary<string, Item>();
 
-			foreach(Item it in Items.Values)
+			foreach (Item it in Items.Values)
 			{
-				if(File.Exists(CfgPath + "/" + it.Path))
+				if (File.Exists(CfgPath + "/" + it.Path))
 				{  // not exists - not include to Items
 					DateTime lastModified = File.GetLastWriteTime(CfgPath + "/" + it.Path);
 					// check if "watch" present
-					
-					var relativeItemPath =  CfgPath + "/" + Path.GetDirectoryName(it.Path);
-					
 
-					foreach(var checkWildcard in it.Watch)
+					var relativeItemPath = CfgPath + "/" + Path.GetDirectoryName(it.Path);
+
+
+					foreach (var checkWildcard in it.Watch)
 					{
 						Console.WriteLine("Checking watch for " + checkWildcard);
 
@@ -108,7 +148,7 @@ namespace NoPipeline
 						var filePath = Path.GetDirectoryName(checkWildcard);
 
 						string[] files;
-					
+
 						try
 						{
 							files = Directory.GetFiles($"{relativeItemPath}/{filePath}", fileName, SearchOption.AllDirectories);
@@ -119,7 +159,7 @@ namespace NoPipeline
 							continue;
 						}
 
-						foreach(var f in files)
+						foreach (var f in files)
 						{
 							Console.WriteLine("Checking " + f);
 							DateTime f_lastModified = File.GetLastWriteTime(f);
@@ -134,8 +174,8 @@ namespace NoPipeline
 							}
 						}
 					}
-					
-					
+
+
 					ItemsCheck.Add(it.Path, it);
 				}
 				else
@@ -150,15 +190,15 @@ namespace NoPipeline
 		/// Saves resulting config.
 		/// </summary>
 		public void Save()
-		{ 
+		{
 			Console.WriteLine("Saving new config.");
-			using(var file = new StreamWriter(CfgName))
+			using (var file = new StreamWriter(CfgName))
 			{
 				// header
 				file.Write(Header.ToString());
 
 				// items
-				foreach(Item it in Items.Values)
+				foreach (Item it in Items.Values)
 				{
 					file.Write(it.ToString());
 				}

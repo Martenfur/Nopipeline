@@ -8,7 +8,7 @@ namespace NoPipeline
 	
 	class Program
 	{
-		public const string Version = "1.0.2.0";
+		public const string Version = "1.1.0.0";
 
 		/// <summary>
 		/// Prints help message.
@@ -32,10 +32,20 @@ namespace NoPipeline
 		
 		static void Main(string[] args)
 		{
+			Run(args);
+
+			#if DEBUG
+				Console.ReadKey();
+			#endif
+		}
+
+
+		static void Run(string[] args)
+		{
 			Console.WriteLine("NoPipeline v" + Version);
 
 			// Print help information if parameter was not provided.
-			if(args.Length != 1)
+			if (args.Length != 1)
 			{
 				PrintHelp();
 				return;
@@ -49,18 +59,14 @@ namespace NoPipeline
 			if (configPath.EndsWith(".mgcb"))
 			{
 				MGCBConfigPath = configPath;
-				NPLConfigPath = Path.GetDirectoryName(configPath) 
-					+ "/"
-					+ Path.GetFileNameWithoutExtension(configPath) 
-					+ ".npl";
+				NPLConfigPath = Path.ChangeExtension(configPath, ".npl");
 			}
 			else
 			{
 				NPLConfigPath = configPath;
-				MGCBConfigPath = Path.GetDirectoryName(configPath) 
-					+ "/"
-					+ Path.GetFileNameWithoutExtension(configPath) 
-					+ ".mgcb";
+				var a = Path.GetDirectoryName(configPath);
+				MGCBConfigPath = Path.ChangeExtension(configPath, ".mgcb");
+				
 			}
 
 			// Check if configuration file exists.
@@ -71,9 +77,9 @@ namespace NoPipeline
 				return;
 			}
 
-			
+
 			JObject conf = ReadConfigFile(NPLConfigPath);
-			
+
 			var rootPath = Path.GetDirectoryName(configPath).Replace("\\", "/") + "/";
 
 			// Create MGCB object to read mgcb file.
@@ -88,6 +94,7 @@ namespace NoPipeline
 
 			// Save MGCB file.
 			content.Save();
+
 		}
 	}
 }
