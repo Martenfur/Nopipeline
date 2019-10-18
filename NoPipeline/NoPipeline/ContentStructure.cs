@@ -11,5 +11,7 @@ namespace NoPipeline
 
 		public const string ContentBeginKeyword = "#begin";
 
+		public const string KeywordStartingChar = "/";
+
 	}
 }

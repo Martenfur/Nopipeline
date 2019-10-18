@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Content.cs" />
     <Compile Include="ContentProcessor.cs" />
+    <Compile Include="ContentStructure.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="MGCB.cs" />
     <Compile Include="Program.cs" />

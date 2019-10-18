@@ -65,7 +65,7 @@ namespace NoPipeline
 			var cp = new ContentProcessor(content.Content, NPLConfigPath);
 
 			// Check all rules in content object and update timestamp of files if required.
-			content.ContentCheck();
+			content.CheckIntegrity();
 
 			// Save MGCB file.
 			content.Save();

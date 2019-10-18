@@ -69,7 +69,10 @@ namespace NoPipeline
 							}
 							else
 							{
-								Content.Header.AppendLine(line);
+								if (line.StartsWith(ContentStructure.KeywordStartingChar))
+								{
+									Content.Header.AppendLine(line);
+								}
 							}
 						}
 					}
@@ -126,9 +129,9 @@ namespace NoPipeline
 		/// <summary>
 		/// Checks if content files exist and checks watch files.
 		/// </summary>
-		public void ContentCheck()
+		public void CheckIntegrity()
 		{
-			var ItemsCheck = new Dictionary<string, Item>();
+			var checkedItems = new Dictionary<string, Item>();
 
 			foreach (Item it in Content.Items.Values)
 			{
@@ -178,14 +181,25 @@ namespace NoPipeline
 					}
 
 
-					ItemsCheck.Add(it.Path, it);
+					checkedItems.Add(it.Path, it);
 				}
 				else
 				{
 					Console.WriteLine(it.Path + " doesn't exist anymore. Removing it from the config.");
 				}
 			}
-			Content.Items = ItemsCheck;
+			Content.Items = checkedItems;
+
+			var checkedReferences = new HashSet<string>();
+			foreach(var reference in Content.References)
+			{
+				if (File.Exists(reference))
+				{
+					checkedReferences.Add(reference);
+				}
+			}
+			Content.References = checkedReferences;
+
 		}
 
 		/// <summary>
@@ -194,24 +208,8 @@ namespace NoPipeline
 		public void Save()
 		{
 			Console.WriteLine("Saving new config.");
-			using (var file = new StreamWriter(CfgName))
-			{
-				// Header.
-				file.Write(Content.Header.ToString());
-
-				// References.
-				foreach (var reference in Content.References)
-				{
-					file.WriteLine(ContentStructure.ReferenceKeyword + reference);
-				}
-
-				// Items.
-				foreach (var item in Content.Items.Values)
-				{
-					file.Write(item.ToString());
-				}
-
-			}
+			
+			File.WriteAllText(CfgName, Content.Build());
 			Console.WriteLine("Done! :o");
 		}
 
