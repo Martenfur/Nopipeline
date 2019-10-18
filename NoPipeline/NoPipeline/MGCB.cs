@@ -88,10 +88,8 @@ namespace NoPipeline
 							if (line.StartsWith(ContentStructure.ReferenceKeyword))
 							{
 								var reference = line.Substring(ContentStructure.ReferenceKeyword.Length);
-								if (!Content.References.Contains(reference))
-								{
-									Content.References.Add(reference);
-								}
+								Content.AddReference(reference);
+								
 								Console.WriteLine("Reading reference");
 							}
 						}

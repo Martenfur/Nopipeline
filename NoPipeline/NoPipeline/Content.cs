@@ -55,9 +55,9 @@ namespace NoPipeline
 		public void AddReference(string reference)
 		{
 			var normalizedReference = reference.Replace("\\", "/");
-			if (!References.Contains(reference))
+			if (!References.Contains(normalizedReference))
 			{
-				References.Add(reference);
+				References.Add(normalizedReference);
 			}
 		}
 
