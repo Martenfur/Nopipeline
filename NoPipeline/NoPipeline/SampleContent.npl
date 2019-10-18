@@ -1,4 +1,9 @@
 {
+	"references":
+	[
+		"%PROGRAMFILES%/YourLibDir/Library.dll",
+		"RelativePath/RelativeLibrary.dll"
+	],
 	"content":
 	{
 		"contentList":
