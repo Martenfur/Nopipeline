@@ -119,11 +119,7 @@ namespace NoPipeline
 			{
 				Console.WriteLine("Reference: " + item);
 				var reference = Environment.ExpandEnvironmentVariables(item.ToString());
-
-				if (!content.References.Contains(reference))
-				{
-					content.References.Add(reference);
-				}
+				content.AddReference(reference);
 			}
 		}
 	}

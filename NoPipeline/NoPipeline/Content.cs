@@ -52,5 +52,15 @@ namespace NoPipeline
 			return builder.ToString();
 		}
 
+		public void AddReference(string reference)
+		{
+			var normalizedReference = reference.Replace("\\", "/");
+			if (!References.Contains(reference))
+			{
+				References.Add(reference);
+			}
+		}
+
+
 	}
 }
