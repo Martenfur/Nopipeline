@@ -89,13 +89,7 @@ namespace NoPipeline
 							newItem.Add(sect.Key, sect.Value);
 						}
 					}
-					Console.WriteLine(content.Items.ContainsKey(newItem.Path) + " : " + newItem.Path);
-					Console.WriteLine(content.Items.Count);
-					foreach(var i in content.Items)
-					{
-						Console.WriteLine("Item: " + i.Value.Path);
-					}
-
+					
 					if (content.Items.ContainsKey(newItem.Path))
 					{
 						content.Items[newItem.Path] = newItem;
@@ -115,6 +109,11 @@ namespace NoPipeline
 
 		void ParseReferences(JObject config, Content content)
 		{
+			if (!config.ContainsKey("references"))
+			{
+				return;
+			}
+
 			var contentJson = config["references"];
 			foreach (var item in contentJson)
 			{
