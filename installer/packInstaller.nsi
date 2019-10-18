@@ -1,7 +1,7 @@
 ﻿SetCompressor /SOLID /FINAL lzma
 
 !define APPNAME "NoPipeline"
-!define INSTALLERVERSION "1.0.2.0"
+!define INSTALLERVERSION "1.1.0.0"
 
 !define MUI_ICON "pics\icon.ico"
 !define MUI_UNICON "pics\icon.ico"
