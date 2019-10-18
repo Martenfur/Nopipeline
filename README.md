@@ -2,52 +2,34 @@
 
 ![NoPipeline](/pics/NoPipeline.png)
 
-You know, Monogame is nice. C# cross-platform game framework which is 
-a pretty good base for an engine or a game.
+You know, Monogame is nice. C# cross-platform game framework which is a pretty good base for an engine or a game.
 
 What certainly is not nice - their Pipeline Tool. 
-For some reason, the only Monogame resource manager is a total pain in 
-the ass to work with: clunky external GUI, no ability to add whole directories. 
-And of course, bugs. Countless, countless bugs.
+For some reason, the only Monogame resource manager is a total pain in the ass to work with: clunky external GUI, no ability to add whole directories. And of course, bugs. Countless, countless bugs.
 
 
 ## So what shall we do about all this?
 
-Fear not - NoPipeline comes to the rescue. It's an addon for Pipeline Tool, 
-which generates and updates `.mgcb` config for you. You can safely add, delete 
-and move around resource files right in Explorer - NoPipeline will do the rest 
-for you.
+Fear not - NoPipeline comes to the rescue. It's an addon for Pipeline Tool, which generates and updates `.mgcb` config for you. You can safely add, delete and move around resource files right in Explorer - NoPipeline will do the rest for you.
+
+Additionally, you can make resource files watch other files! Let's say, you got Tiled map project. It has one main `.tmx` file and a bunch of textures and tileset files. But Pipeline Tool has referenced only `.tmx` file, so if you
+update only texture or only tileset, you have to either update the `.tmx` or do a manual rebuild, because Pipeline Tool doesn't know about files other than `.tmx`. 
 
 
-Additionally, you can make resource files watch other files! Let's say, you got
-Tiled map project. It has one main `.tmx` file and a bunch of textures and 
-tileset files. But Pipeline Tool has referenced only `.tmx` file, so if you
-update only texture or only tileset, you have to either update the `.tmx` or 
-do a manual rebuild, because Pipeline Tool doesn't know about files other 
-than `.tmx`. 
-
-
-With NoPipeline you don't have to do any of that - just set `.tmx` file to watch
-textures and tilesets - and Pipeline Tool will detect and update everything by
-itself.
+With NoPipeline you don't have to do any of that - just set `.tmx` file to watch textures and tilesets - and Pipeline Tool will detect and update everything by itself.
 
 
 ## Sounds cool and all, but I don't want to migrate to some other tool.
 
-You don't have to. NoPipeline is not a Pipeline Tool replacement - it's an 
-addon. You can add or remove NoPipeline at any point in development, and
-nothing will break. NoPipeline won't override resources which already exist in
-the `.mgcb` config and will leave a perfectly valid config after itself.
+You don't have to. NoPipeline is not a Pipeline Tool replacement - it's an addon. You can add or remove NoPipeline at any point in development, and nothing will break. NoPipeline won't override resources which already exist in the `.mgcb` config and will leave a perfectly valid config after itself.
 
 
 ## Now we're talking. How do I integrate this thing in my project?
 
-First of all, install the [latest release](https://github.com/gnFur/NoPipeline/releases/latest) of NoPipeline.
-After that, you will need a NPL config. NPL config is what NoPipeline uses to 
-generate MGCB config. Inside it looks like this:
+First of all, install the [latest release](https://github.com/gnFur/NoPipeline/releases/latest) of NoPipeline. After that, you will need a NPL config. NPL config is what NoPipeline uses to generate MGCB config. Inside it looks like this:
 
 
-```
+```json
 {
 	"content": 
 	{
@@ -103,7 +85,7 @@ has any.
 
 There is also an optional `watch` parameter. Its usage looks like this:
 
-```
+```json
 {
   "content": 
   {
@@ -123,53 +105,59 @@ There is also an optional `watch` parameter. Its usage looks like this:
   }
 }
 ```
-With `watch` parameter present, all the `.spritegoup` files will be built
-by Pipeline Tool, if any `.png` or `.json` file will be changed. Note that
-all the paths listed in `watch` are relative to the main `path`, so final paths 
-will look like this: `Graphics/Default/*.png`.
+With `watch` parameter present, all the `.spritegoup` files will be built by Pipeline Tool, if any `.png` or `.json` file will be changed. Note that all the paths listed in `watch` are relative to the main `path`, so final paths  will look like this: `Graphics/Default/*.png`.
+
+But that's not all. NoPipeline also provides an extended reference management. Add `references` section into your `.npl` config like this:
+
+```json
+{
+	"references":
+	[
+		"%PROGRAMFILES%/YourLibDir/Library.dll",
+		"RelativePath/RelativeLibrary.dll",
+	],
+	"content": 
+	{
+
+	}
+}
+```
+With NoPipeline you can use environment variables like `%PROGRAMFILES%` - something Pipeline Tool can't do by itself. If referenced libraries are missing, NoPipeline will delete their entries from config. Additionally, add references the old way from the Pipeline Tool - NoPipeline will not delete them unless the files themselves doesn't exist.
+
+You can also take a look at the sample config `SampleContent.npl`, which comes included with the program.
 
 
-You can also take a look at a sample config `SampleContent.npl`, which is included
-with the program.
-
-
-With NPL config done, save it in the same directory as MGCB config and name it
-the same as it. So, if your MGCB config is named `Content/Content.mgcb`, your
-NPL config should be `Content/Content.npl`
+With NPL config done, save it in the same directory as MGCB config and name it the same as it. So, if your MGCB config is named `Content/Content.mgcb`, your NPL config should be `Content/Content.npl`
 
 You can also include NPL in Visual Studio project, if you want.
 
 
 After all that, open `.csproj` file in text editor and find these entries:
 
-```
+```xml
 <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />  
 ```
 
-Insert `<Import Project="$(MSBuildExtensionsPath)\NoPipeline\NoPipeline.targets" />`
+Insert `<Import Project="$(MSBuildExtensionsPath)\NoPipeline\NoPipeline.targets" Condition="Exists('$(MSBuildExtensionsPath)\NoPipeline\NoPipeline.targets')"/>`
 **before** content builder entry, so it would look like this:
 
-```
+```xml
 <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-<Import Project="$(MSBuildExtensionsPath)\NoPipeline\NoPipeline.targets" />
+<Import Project="$(MSBuildExtensionsPath)\NoPipeline\NoPipeline.targets" Condition="Exists('$(MSBuildExtensionsPath)\NoPipeline\NoPipeline.targets')"/>
 <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />  
 ```
 
 And from this point you can start forgetting about Pipeline Tool. : - )
 
-If you want more seamless pipeline-forgetting experience, you can check out 
-[Monofoxe Engine](https://bitbucket.org/gnFur/monofoxe/src), which has NoPipeline
-integrated out of the box (COMING SOON!).
+If you want more seamless pipeline-forgetting experience, you can check out [Monofoxe Engine](https://bitbucket.org/gnFur/monofoxe/src), with NoPipeline integrated out of the box.
 
 ## All the other stuffs. 
 
-The thing is licensed under MPL 2.0, so you can use it and its code in anything
-you want for free.
+The thing is licensed under MPL 2.0, so you can use it and its code in anything you want for free.
 
 
-Huge thanks to [MirrorOfSun](https://github.com/MirrorOfSUn), who wrote most of 
-the code.
+Huge thanks to [MirrorOfSun](https://github.com/MirrorOfSUn), who wrote most of the code.
 
 
 *Don't forget to pet your foxes.*
