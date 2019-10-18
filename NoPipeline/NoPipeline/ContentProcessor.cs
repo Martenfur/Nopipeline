@@ -118,7 +118,7 @@ namespace NoPipeline
 			foreach (var item in contentJson)
 			{
 				Console.WriteLine("Reference: " + item);
-				var reference = Path.GetFullPath(Environment.ExpandEnvironmentVariables(item.ToString()));
+				var reference = Environment.ExpandEnvironmentVariables(item.ToString());
 
 				if (!content.References.Contains(reference))
 				{

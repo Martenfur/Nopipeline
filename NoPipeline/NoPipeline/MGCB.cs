@@ -193,9 +193,14 @@ namespace NoPipeline
 			var checkedReferences = new HashSet<string>();
 			foreach(var reference in Content.References)
 			{
-				if (File.Exists(reference))
+				Console.WriteLine("Checking reference: " + Path.Combine(CfgPath, reference));
+				if (File.Exists(Path.Combine(CfgPath, reference)))
 				{
 					checkedReferences.Add(reference);
+				}
+				else
+				{
+					Console.WriteLine(reference + " wasn't found! Deleting it from the config.");
 				}
 			}
 			Content.References = checkedReferences;

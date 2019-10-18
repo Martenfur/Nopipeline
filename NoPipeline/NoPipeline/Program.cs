@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NoPipeline
 {
@@ -20,9 +21,10 @@ namespace NoPipeline
 		}
 
 
+
 		static void Run(string[] args)
 		{
-			Console.WriteLine("NoPipeline v" + Version);
+			Console.WriteLine("NoPipeline v" + Version + " ");
 
 			// Print help information if parameter was not provided.
 			if (args.Length != 1)
@@ -36,7 +38,10 @@ namespace NoPipeline
 			string MGCBConfigPath, NPLConfigPath;
 
 			var configPath = Path.Combine(Environment.CurrentDirectory, args[0].Replace("\\", "/"));
-			
+			Console.WriteLine(configPath);
+			Console.WriteLine(args[0].Replace("\\", "/"));
+			Console.WriteLine(Environment.CurrentDirectory);
+
 			if (configPath.EndsWith(".mgcb"))
 			{
 				MGCBConfigPath = configPath;
