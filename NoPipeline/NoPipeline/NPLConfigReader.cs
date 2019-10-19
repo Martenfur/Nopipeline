@@ -11,25 +11,31 @@ namespace NoPipeline
 	 *   conf:JObject - config object
 	 *   content:MGCB - MGCB object
 	 */
-	class ContentProcessor
+	class NPLConfigReader : IConfigReader
 	{
 
-		public ContentProcessor(Content content, string configPath)
+		public void Read(Content content, string configPath)
 		{
 			var config = JObject.Parse(File.ReadAllText(configPath, Encoding.UTF8));
 			var rootDir = Path.GetDirectoryName(configPath) + "/";
 
-			JObject contentJson = config["content"] as JObject;
+			var contentJson = (JObject)config["content"];
 			
-			ParseReferences(config, content);
-
+			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.WriteLine("Reading NPL config.");
+			Console.ForegroundColor = ConsoleColor.Gray;
 
-			foreach(var item in contentJson)
+
+			Console.WriteLine();
+			ParseReferences(config, content);
+			Console.WriteLine();
+
+
+			foreach (var item in contentJson)
 			{
 				// Read section.
 				string sectionName = item.Key;
-				JObject section = item.Value as JObject;
+				var section = (JObject)item.Value;
 				
 				// Read item.
 				string path;
@@ -42,9 +48,11 @@ namespace NoPipeline
 					Console.WriteLine($"Key 'path' doesn't exist in  {sectionName}!");
 					throw new Exception($"Key 'path' doesn't exist in  {sectionName}!");
 				}
-				
-				Console.WriteLine("Rule: " + path);
-				
+
+				Console.ForegroundColor = ConsoleColor.Magenta;
+				Console.WriteLine("Reading content for: " + path);
+				Console.ForegroundColor = ConsoleColor.Gray;
+
 				var fileName = Path.GetFileName(path);
 				var filePath = Path.GetDirectoryName(path);
 				var files = new string[] { };
@@ -60,14 +68,17 @@ namespace NoPipeline
 				}
 				catch(Exception e)
 				{
-					Console.WriteLine($"Error reading files from {rootDir}{filePath}: " + e.Message);
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine($"    Error reading files from {rootDir}{filePath}: ");
+					Console.WriteLine("    " + e.Message);
+					Console.ForegroundColor = ConsoleColor.Gray;
 				}
 
-				foreach(var file in files)
+				foreach (var file in files)
 				{
 					var name = file.Remove(0, rootDir.Length).Replace('\\', '/');
-					var newItem = new Item() { Path = name };
-					newItem.FixPath();
+					var newItem = new Item(name);
+					
 					Console.WriteLine("    Reading " + name);
 
 					foreach(var sect in section)
@@ -90,20 +101,16 @@ namespace NoPipeline
 						}
 					}
 					
-					if (content.Items.ContainsKey(newItem.Path))
-					{
-						content.Items[newItem.Path] = newItem;
-					}
-					else
-					{
-						content.Items.Add(newItem.Path, newItem);
-					}
+					content.AddContentItem(newItem);
 				}
 
 			}
 
+			Console.WriteLine();
 			Console.WriteLine("Finished reading NPL config!");
 			Console.WriteLine();
+			
+
 		}
 
 
@@ -117,8 +124,8 @@ namespace NoPipeline
 			var contentJson = config["references"];
 			foreach (var item in contentJson)
 			{
-				Console.WriteLine("Reference: " + item);
 				var reference = Environment.ExpandEnvironmentVariables(item.ToString());
+				Console.WriteLine("Reading reference: " + reference);
 				content.AddReference(reference);
 			}
 		}

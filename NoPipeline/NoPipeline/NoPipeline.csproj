@@ -64,10 +64,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Content.cs" />
-    <Compile Include="ContentProcessor.cs" />
+    <Compile Include="IConfigReader.cs" />
+    <Compile Include="NPLConfigReader.cs" />
     <Compile Include="ContentStructure.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="MGCB.cs" />
+    <Compile Include="MGCBConfigReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -15,8 +15,20 @@ namespace NoPipeline
 		/// <summary>
 		/// Path to the files. Can contain windcards.
 		/// </summary>
-		public string Path { get; set; }
-		
+		public string Path 
+		{ 
+			get => _path;
+			set
+			{
+				_path = value.Replace("\\", "/");
+				if (_path.StartsWith("/")) // MGCB will melt if the path will start with a slash.
+				{
+					_path = Path.Substring(1);
+				}
+			}
+		}
+		private string _path;
+
 		/// <summary>
 		/// If true, file search will be resursive.
 		/// </summary>
@@ -37,8 +49,9 @@ namespace NoPipeline
 		/// </summary>
 		public List<string> Parameters { get; set; }
 
-		public Item()
+		public Item(string path)
 		{
+			Path = path;
 			Parameters = new List<string>();
 			Recursive = false;
 			Watch = new List<string>();
@@ -47,7 +60,6 @@ namespace NoPipeline
 		public override string ToString()
 		{
 			var builder = new StringBuilder();
-			FixPath();
 			builder.Append($"#begin {Path.Replace('\\', '/')}{System.Environment.NewLine}");
 			foreach(var parameter in Parameters)
 			{
@@ -60,34 +72,25 @@ namespace NoPipeline
 
 			return builder.ToString();
 		}
-
-		public void FixPath()
-		{
-			if (Path.StartsWith("/")) // MGCB will melt if the path will start with a slash.
-			{
-				Path = Path.Substring(1);
-			}
-		}
-
+		
 		public void Add(string param, JToken value)
 		{
 			switch(param.ToLower())
 			{
 				case "path":
-					Path = value.ToString().Replace('\\', '/');
-					FixPath();
+					Path = value.ToString();
 					break;
 				case "recursive":
-					Recursive = (value.ToString().ToLower() == "true");
+					Recursive = (string.Compare(value.ToString(), "true", true) == 0);
 					break;
 				case "action":
-					Action = $"/{value.ToString()}:{Path.Replace('\\', '/')}";
+					Action = $"/{value.ToString()}:{Path}";
 					break;
 				case "watch":
 					Watch = value.ToObject<List<string>>();
 					break;
 				default:
-					Parameters.Add($"/{param}:{value.ToString().Replace('\\', '/')}");
+					Parameters.Add($"/{param}:{value.ToString()}");
 					break;
 			}
 		}

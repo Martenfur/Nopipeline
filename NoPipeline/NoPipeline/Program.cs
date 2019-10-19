@@ -13,7 +13,18 @@ namespace NoPipeline
 		
 		static void Main(string[] args)
 		{
-			Run(args);
+			Console.WriteLine("NoPipeline v" + Version);
+
+			// Print help information if parameter was not provided.
+			if (args.Length != 1)
+			{
+				PrintHelp();
+				return;
+			}
+			
+			var configPath = Path.Combine(Environment.CurrentDirectory, args[0].Replace("\\", "/"));
+
+			Run(configPath);
 
 			#if DEBUG
 				Console.ReadKey();
@@ -22,25 +33,12 @@ namespace NoPipeline
 
 
 
-		static void Run(string[] args)
+		static void Run(string configPath)
 		{
-			Console.WriteLine("NoPipeline v" + Version + " ");
-
-			// Print help information if parameter was not provided.
-			if (args.Length != 1)
-			{
-				PrintHelp();
-				return;
-			}
-
+			
 			// Read config file name from the input parameter.
 
 			string MGCBConfigPath, NPLConfigPath;
-
-			var configPath = Path.Combine(Environment.CurrentDirectory, args[0].Replace("\\", "/"));
-			Console.WriteLine(configPath);
-			Console.WriteLine(args[0].Replace("\\", "/"));
-			Console.WriteLine(Environment.CurrentDirectory);
 
 			if (configPath.EndsWith(".mgcb"))
 			{
@@ -61,19 +59,41 @@ namespace NoPipeline
 				return;
 			}
 
+			var content = new Content();
 			
 			// Create MGCB object to read mgcb file.
-			var content = new MGCB(MGCBConfigPath);
+			var MGCBReader = new MGCBConfigReader();
+			MGCBReader.Read(content, MGCBConfigPath);
+
+			Console.WriteLine();
+			Console.WriteLine("-------------------------------------");
+			Console.WriteLine();
 
 			// Create ContentProcessor object to read config file and update content
 			// content will be overwrited from config file.
-			var cp = new ContentProcessor(content.Content, NPLConfigPath);
+			var NPLReader = new NPLConfigReader();
+			NPLReader.Read(content, NPLConfigPath);
+
+			Console.WriteLine("-------------------------------------");
+			Console.WriteLine();
 
 			// Check all rules in content object and update timestamp of files if required.
-			content.CheckIntegrity();
+			content.CheckIntegrity(Path.GetDirectoryName(MGCBConfigPath));
 
-			// Save MGCB file.
-			content.Save();
+			// Saving MGCB file.
+
+			Console.WriteLine();
+			Console.WriteLine("-------------------------------------");
+			Console.WriteLine();
+
+			Console.WriteLine("Saving new config as " + MGCBConfigPath);
+			Console.WriteLine();
+
+			File.WriteAllText(MGCBConfigPath, content.Build());
+
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine("Done! \\^u^/");
+			Console.ForegroundColor = ConsoleColor.Gray;
 
 		}
 
