@@ -113,7 +113,7 @@ namespace NoPipeline
 
 					DateTime itemLastModified = File.GetLastWriteTime(rootPath + item.Path);
 					
-					var relativeItemPath = Path.Combine(rootPath + Path.GetDirectoryName(item.Path));
+					var relativeItemPath = Path.Combine(rootPath, Path.GetDirectoryName(item.Path));
 
 					// Watched files are files which aren't tracked by the content pipeline.
 					// But they are tracked by us! We look which files were recently modified
@@ -129,9 +129,10 @@ namespace NoPipeline
 
 						string[] files;
 
+						Console.WriteLine("Checking wildcars for: " + Path.Combine(relativeItemPath, filePath));
 						try
 						{
-							files = Directory.GetFiles($"{relativeItemPath}/{filePath}", fileName, SearchOption.AllDirectories);
+							files = Directory.GetFiles(Path.Combine(relativeItemPath, filePath), fileName, SearchOption.AllDirectories);
 						}
 						catch
 						{
@@ -148,7 +149,7 @@ namespace NoPipeline
 							if (itemLastModified < fileLastModified || itemLastModified < fileCreationTime)
 							{
 								Console.WriteLine("Modifying: " + file);
-								File.SetLastWriteTime(rootPath + item.Path, DateTime.Now);
+								File.SetLastWriteTime(Path.Combine(rootPath, item.Path), DateTime.Now);
 								break;
 							}
 						}
