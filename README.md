@@ -26,7 +26,7 @@ You don't have to. NoPipeline is not a Pipeline Tool replacement - it's an addon
 
 ## Now we're talking. How do I integrate this thing in my project?
 
-First of all, install the [latest release](https://github.com/gnFur/NoPipeline/releases/latest) of NoPipeline. After that, you will need a NPL config. NPL config is what NoPipeline uses to generate MGCB config. Inside it looks like this:
+First of all, install the [latest release](https://github.com/Martenfur/NoPipeline/releases/latest) of NoPipeline. After that, you will need a NPL config. NPL config is what NoPipeline uses to generate MGCB config. Inside it looks like this:
 
 
 ```json
@@ -150,7 +150,7 @@ Insert `<Import Project="$(MSBuildExtensionsPath)\NoPipeline\NoPipeline.targets"
 
 And from this point you can start forgetting about Pipeline Tool. : - )
 
-If you want more seamless pipeline-forgetting experience, you can check out [Monofoxe Engine](https://bitbucket.org/gnFur/monofoxe/src), with NoPipeline integrated out of the box.
+If you want more seamless pipeline-forgetting experience, you can check out [Monofoxe Engine](https://bitbucket.org/Martenfur/monofoxe/src), with NoPipeline integrated out of the box.
 
 ## All the other stuffs. 
 
