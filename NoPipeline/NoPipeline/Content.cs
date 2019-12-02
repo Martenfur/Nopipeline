@@ -58,7 +58,7 @@ namespace NoPipeline
 				builder.Append(item.ToString());
 			}
 
-			builder.AppendLine();
+			RemoveTrailingBlankLines(builder);
 
 			return builder.ToString();
 		}
@@ -188,5 +188,12 @@ namespace NoPipeline
 		}
 
 
+		private void RemoveTrailingBlankLines(StringBuilder builder)
+		{
+			while(builder.ToString().EndsWith(Environment.NewLine))
+			{
+				builder.Remove(builder.Length - Environment.NewLine.Length, Environment.NewLine.Length);
+			}
+		}
 	}
 }
