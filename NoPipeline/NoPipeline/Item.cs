@@ -32,22 +32,22 @@ namespace NoPipeline
 		/// <summary>
 		/// If true, file search will be resursive.
 		/// </summary>
-		public bool Recursive { get; set; }
+		public bool Recursive;
 		
 		/// <summary>
 		/// List of watch entries.
 		/// </summary>
-		public List<string> Watch { get; set; }
+		public List<string> Watch;
 		
 		/// <summary>
 		/// File action. Can be build or copy.
 		/// </summary>
-		public string Action { get; set; } = "";
+		public string Action = "";
 
 		/// <summary>
 		/// List of processor parameters.
 		/// </summary>
-		public List<string> Parameters { get; set; }
+		public List<string> Parameters;
 
 		public Item(string path)
 		{
