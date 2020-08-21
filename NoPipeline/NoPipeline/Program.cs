@@ -1,12 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Text;
-using Newtonsoft.Json.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace NoPipeline
 {
-	
+
 	class Program
 	{
 		public const string Version = "1.1.0.0";
@@ -25,10 +22,6 @@ namespace NoPipeline
 			var configPath = Path.Combine(Environment.CurrentDirectory, args[0].Replace("\\", "/"));
 
 			Run(configPath);
-
-			#if DEBUG
-				Console.ReadKey();
-			#endif
 		}
 
 

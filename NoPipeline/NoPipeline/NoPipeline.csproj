@@ -6,24 +6,18 @@
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>npl</ToolCommandName>
 		<PackageId>dotnet-npl</PackageId>
-		<AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>npl</AssemblyName>
 		<UseAppHost>true</UseAppHost>
   </PropertyGroup>
   
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="SampleContent.npl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="NoPipeline.targets">
+    <None Include="Nopipeline.targets">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   
   <ItemGroup>
