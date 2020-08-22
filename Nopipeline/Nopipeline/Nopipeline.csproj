@@ -6,9 +6,9 @@
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>npl</ToolCommandName>
 		<PackageId>dotnet-npl</PackageId>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>npl</AssemblyName>
 		<UseAppHost>true</UseAppHost>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   
   <ItemGroup>

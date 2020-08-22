@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PublishReadyToRun>false</PublishReadyToRun>
-    <TieredCompilation>false</TieredCompilation>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<PublishReadyToRun>false</PublishReadyToRun>
+		<TieredCompilation>false</TieredCompilation>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<ApplicationIcon>Icon.ico</ApplicationIcon>
+	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="Content\bin\**" />
 		<Compile Remove="Content\obj\**" />
@@ -17,29 +17,29 @@
 		<None Remove="Content\bin\**" />
 		<None Remove="Content\obj\**" />
 	</ItemGroup>
-  <ItemGroup>
-    <None Remove="Icon.ico" />
-    <None Remove="Icon.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Icon.ico" />
-    <EmbeddedResource Include="Icon.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
-  </ItemGroup>
-  <ItemGroup>
-    <TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
-		<PackageReference Include="Nopipeline.Task" Version="2.0.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Graphics\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Nopipeline.Sample\Nopipeline.Sample.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Icon.ico" />
+		<None Remove="Icon.bmp" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Icon.ico" />
+		<EmbeddedResource Include="Icon.bmp" />
+	</ItemGroup>
+	<ItemGroup>
+		<MonoGameContentReference Include="Content\Content.mgcb" />
+	</ItemGroup>
+	<ItemGroup>
+		<TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
+		<PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
+		<PackageReference Include="Nopipeline.Task" Version="2.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Content\Graphics\" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Nopipeline.Sample\Nopipeline.Sample.csproj" />
+	</ItemGroup>
 </Project>

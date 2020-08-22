@@ -2,7 +2,8 @@
 	"root": "../../Nopipeline.Sample.Content/Content/",
 	"references":
 	[
-		"../../Nopipeline.Sample.Content/bin/Debug/Nopipeline.Sample.Content.dll"
+		// Reference paths are not affected by root.
+		"../../Nopipeline.Sample.Content/bin/Debug/*.dll"
 	],
 	"content":
 	{

@@ -11,7 +11,7 @@ namespace NoPipeline
 	 *   conf:JObject - config object
 	 *   content:MGCB - MGCB object
 	 */
-	public class NPLConfigReader : IConfigReader
+	public class NPLConfigReader
 	{
 
 		public void Read(Content content, string configPath)
@@ -39,7 +39,7 @@ namespace NoPipeline
 			Console.WriteLine();
 
 			Console.WriteLine();
-			ParseReferences(config, content);
+			ParseReferences(config, content, rootDir);
 			Console.WriteLine();
 
 
@@ -145,7 +145,7 @@ namespace NoPipeline
 		}
 
 
-		void ParseReferences(JObject config, Content content)
+		private void ParseReferences(JObject config, Content content, string rootDir)
 		{
 			if (!config.ContainsKey("references"))
 			{
@@ -157,7 +157,16 @@ namespace NoPipeline
 			{
 				var reference = Environment.ExpandEnvironmentVariables(item.ToString());
 				Console.WriteLine("Reading reference: " + reference);
-				content.AddReference(reference);
+
+				var refName = Path.GetFileName(reference);
+				var refPath = Path.GetDirectoryName(reference);
+				var dlls = Directory.GetFiles(Path.Combine(rootDir, refPath), refName, SearchOption.TopDirectoryOnly);
+				foreach(var dll in dlls)
+				{
+					var resultPath = Path.Combine(refPath, Path.GetFileName(dll)).Replace('\\', '/');
+					Console.WriteLine(resultPath);
+					content.AddReference(resultPath);
+				}
 			}
 		}
 	}

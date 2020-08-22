@@ -4,11 +4,11 @@ using System.IO;
 namespace NoPipeline
 {
 
-	class Program
+	public class Program
 	{
-		public const string Version = "1.1.0.0";
+		public const string Version = "2.0.0.0"; // TODO: Replace
 		
-		static void Main(string[] args)
+		public static void Main(string[] args)
 		{
 			Console.WriteLine("NoPipeline v" + Version);
 

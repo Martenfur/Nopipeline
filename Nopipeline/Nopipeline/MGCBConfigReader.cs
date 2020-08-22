@@ -26,7 +26,7 @@ namespace NoPipeline
 	 *	                  if file was modified - update the item file modified time to current(if applicable)
 	 *	 Save() - store the MGCB object into mgcb congiguration file
 	 */
-	public class MGCBConfigReader : IConfigReader
+	public class MGCBConfigReader
 	{
 		
 		public void Read(Content content, string MGCBConfigPath)
