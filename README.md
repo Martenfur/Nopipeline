@@ -27,6 +27,7 @@ First of all, install the `Nopipeline` via Nuget. After that, you will need a NP
 
 ```json
 {
+	"root": "../Path/To/Your/Content/",
 	"content": 
 	{
 		"textures": 
@@ -62,11 +63,13 @@ File groups can contain whole directories or single files.
 
 
 Let's look at an each parameter:
+- `root` is appended to each `path` field unless specified otherwise. This is an optional field.
 - `path` is a path to the resource files relative to the main Content folder. 
 Here are some examples:
 	- `Graphics/Textures/texture.png` will grab only `texture.png` file.
 	- `Graphics/Textures/*.png` will grab any `.png` file.
 	- `Graphics/Textures/*` will grab any file in the `Textures` directory.
+	- `$Graphics/Textures/*` will ignore `root` property. 
 - `recursive` tells Nopipeline to include resource files from subdirectories.
 For example, if set to `True`, and the `path` is `Graphics/Textures/*.png`,
 files from `Graphics/Textures/Subdir/` will be grabbed as well. If set to 
@@ -111,6 +114,7 @@ But that's not all. Nopipeline also provides an extended reference management. A
 	[
 		"%PROGRAMFILES%/YourLibDir/Library.dll",
 		"RelativePath/RelativeLibrary.dll",
+		"OtherPath/*.dll",
 	],
 	"content": 
 	{
@@ -119,13 +123,13 @@ But that's not all. Nopipeline also provides an extended reference management. A
 }
 ```
 With Nopipeline you can use environment variables like `%PROGRAMFILES%` - something Pipeline Tool can't do by itself. If referenced libraries are missing, Nopipeline will delete their entries from config. Additionally, you can add references the old way from the Pipeline Tool - Nopipeline will not delete them unless the files themselves don't exist.
-
+References also support wildcards just like normal file paths.
 
 With NPL config done, save it in the same directory as MGCB config and give it the same name. For example, if your MGCB config is named `Content/Content.mgcb`, your NPL config should be `Content/Content.npl`
 
 You can also include NPL in Visual Studio project, if you want.
 
-If you want more seamless pipeline-forgetting experience, you can check out [Monofoxe Engine](https://bitbucket.org/Martenfur/monofoxe/src), with Nopipeline integrated out of the box.
+If you want more seamless pipeline-forgetting experience, you can check out [Monofoxe Engine](https://github.com/Martenfur/Monofoxe), with Nopipeline integrated out of the box.
 
 ## All the other stuffs. 
 
