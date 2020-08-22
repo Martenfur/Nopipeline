@@ -22,7 +22,7 @@ Nopipeline is not a Pipeline Tool replacement - it's an addon. Its only function
 
 ## Now we're talking. How do I integrate this thing in my project?
 
-First of all, install the `Nopipeline` via Nuget. After that, you will need a NPL config. NPL config is what Nopipeline uses to generate MGCB config. It looks like this:
+First of all, install the `Nopipeline.Task` via Nuget. After that, you will need a NPL config. NPL config is what Nopipeline uses to generate MGCB config. It looks like this:
 
 
 ```json
@@ -130,6 +130,10 @@ With NPL config done, save it in the same directory as MGCB config and give it t
 You can also include NPL in Visual Studio project, if you want.
 
 If you want more seamless pipeline-forgetting experience, you can check out [Monofoxe Engine](https://github.com/Martenfur/Monofoxe), with Nopipeline integrated out of the box.
+
+## Running the sample.
+
+Before running the sample, build `Nopipeline.Sample.Content` project. This will build the custom pipeline extension.
 
 ## All the other stuffs. 
 
