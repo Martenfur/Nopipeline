@@ -2,6 +2,10 @@
 
 ![Nopipeline](/pics/Nopipeline.png)
 
+
+[![nuget](https://badgen.net/nuget/v/Nopipeline.Task?icon=nuget)](https://www.nuget.org/packages/Nopipeline.Task)
+
+
 For some reason, the only Monogame's resource manager, Pipeline tool, is a total pain in the ass to work with. A lot of stuff which should've been automated is instead painfully done by hand in a crappy UI. After you've dragged and dropped 100 pngs one by one, you come to realization that the Pipeline tool is nothing but tears and sadness.
 
 ## So what shall we do about all this?
