@@ -2,6 +2,7 @@
 	"root": "../../Nopipeline.Sample.Content/Content/",
 	"references":
 	[
+		"../../Nopipeline.Sample.Content/bin/Debug/Nopipeline.Sample.Content.dll"
 	],
 	"content":
 	{
@@ -23,9 +24,11 @@
 				"TextureFormat": "Color"
 			}
 		},
+
+		// This rule will load graphics from platform-specific projects.
 		"textures":
 		{
-			"path": "$Graphics/*.png",
+			"path": "$Graphics/*.png", // $ means that 'root' will not be appended to the path.
 			"recursive": "True",
 			"action": "build",
 			"importer": "TextureImporter",
@@ -40,6 +43,20 @@
 				"MakeSquare": "False",
 				"TextureFormat": "Color"
 			}
+		},
+		"sampleWatch":
+		{
+			"path": "SampleWatch/*.sampleWatch",
+			"recursive": "True",
+			"action": "build",
+			"importer": "SampleWatchImporter",
+			"processor": "PassThroughProcessor",
+			"watch": // sampleWatch files will update whenever any txt file will change.
+			[
+				// Relative to the sampleWatch path.
+				"*.txt"
+			]
 		}
+
 	}
 }

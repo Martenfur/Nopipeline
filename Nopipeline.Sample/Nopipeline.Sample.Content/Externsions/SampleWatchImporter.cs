@@ -8,7 +8,7 @@ namespace Nopipeline.Sample.Content.Extensions
 	{
 		public override string Import(string filename, ContentImporterContext context)
 		{
-			// 
+			// .samplewatch depends upon txt file with the same name.
 			return File.ReadAllText(Path.ChangeExtension(filename, ".txt"));
 		}
 	}

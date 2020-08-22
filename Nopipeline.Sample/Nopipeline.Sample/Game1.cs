@@ -7,13 +7,13 @@ namespace Nopipeline.Sample
 {
 	public class Game1 : Game
 	{
-		private GraphicsDeviceManager _graphics;
-		private SpriteBatch _spriteBatch;
+		private Color _backgroundColor = new Color(188, 249, 147);
 
-		private Texture2D _sprite1;
-		private Texture2D _sprite2;
-		private Texture2D _sprite3;
-		private Texture2D _sprite4;
+		private GraphicsDeviceManager _graphics;
+
+		public static SpriteBatch SpriteBatch;
+
+		private Lawn _lawn = new Lawn();
 
 		public Game1()
 		{
@@ -31,12 +31,8 @@ namespace Nopipeline.Sample
 
 		protected override void LoadContent()
 		{
-			_spriteBatch = new SpriteBatch(GraphicsDevice);
-
-			_sprite1 = Content.Load<Texture2D>("Graphics/Sprite1");
-			_sprite2 = Content.Load<Texture2D>("Graphics/Sprite2");
-			_sprite3 = Content.Load<Texture2D>("Graphics/Sprite3");
-			_sprite4 = Content.Load<Texture2D>("Graphics/Sprite4");
+			SpriteBatch = new SpriteBatch(GraphicsDevice);
+			_lawn.Init(Content);
 			Debug.WriteLine(Content.Load<string>("SampleWatch/Watch"));
 		}
 
@@ -47,24 +43,18 @@ namespace Nopipeline.Sample
 				Exit();
 			}
 
-			// TODO: Add your update logic here
-
 			base.Update(gameTime);
 		}
 
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			GraphicsDevice.Clear(_backgroundColor);
 
-			// TODO: Add your drawing code here
+			SpriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-			_spriteBatch.Begin();
-			_spriteBatch.Draw(_sprite1, new Vector2(100, 100), Color.White);
-			_spriteBatch.Draw(_sprite2, new Vector2(100 + 32, 100), Color.White);
-			_spriteBatch.Draw(_sprite3, new Vector2(100, 100 + 32), Color.White);
-			_spriteBatch.Draw(_sprite4, new Vector2(100 + 32, 100 + 32), Color.White);
+			_lawn.Draw();
 
-			_spriteBatch.End();
+			SpriteBatch.End();
 
 			base.Draw(gameTime);
 		}
