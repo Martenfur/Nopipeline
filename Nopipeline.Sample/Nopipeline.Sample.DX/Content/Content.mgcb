@@ -1,0 +1,68 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:Windows
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:../../Nopipeline.Sample.Content/bin/Debug/Nopipeline.Sample.Content.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin ../../Nopipeline.Sample.Content/Content/Graphics/Sprite2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../Nopipeline.Sample.Content/Content/Graphics/Sprite2.png;Graphics/Sprite2.png
+
+#begin ../../Nopipeline.Sample.Content/Content/Graphics/Sprite3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../Nopipeline.Sample.Content/Content/Graphics/Sprite3.png;Graphics/Sprite3.png
+
+#begin ../../Nopipeline.Sample.Content/Content/Graphics/Sprite4.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../Nopipeline.Sample.Content/Content/Graphics/Sprite4.png;Graphics/Sprite4.png
+
+#begin Graphics/Sprite1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Graphics/Sprite1.png
+
+#begin ../../Nopipeline.Sample.Content/Content/SampleWatch/Watch.sampleWatch
+/importer:SampleWatchImporter
+/processor:PassThroughProcessor
+/build:../../Nopipeline.Sample.Content/Content/SampleWatch/Watch.sampleWatch;SampleWatch/Watch.sampleWatch

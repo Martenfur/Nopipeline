@@ -1,0 +1,10 @@
+﻿This is a sample resource for the demonstration of the watch
+feature of nopipeline. Custom Importer will load the txt
+file with the same name instead of this one. 
+This means, this .sampleWatch file depends upon the contents of the .txt 
+file with the same name, which is not tracked by mgcb. Without Nopipeline, 
+if .txt file contents will be changed, content builder will keep loading the 
+old version from cache until either manual rebuild or if this file is changed.
+
+With Nopipeline, however, if .txt file is changed, this file will be rebuilt
+automatically.

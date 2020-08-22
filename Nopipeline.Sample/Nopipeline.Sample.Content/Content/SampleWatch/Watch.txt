@@ -1,0 +1,6 @@
+﻿This is the text stored in the Watch.txt file. 
+It's not tracked by Pipeline and is loaded through
+Watch.sampleWatch file. 
+If you change this file without Nopipeline present, 
+this text will not update in game after new build,
+because Watch.sampleWatch wasn't changed.

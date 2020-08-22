@@ -1,0 +1,45 @@
+﻿{
+	"root": "../../Nopipeline.Sample.Content/Content/",
+	"references":
+	[
+	],
+	"content":
+	{
+		"commonTextures":
+		{
+			"path": "Graphics/*.png",
+			"recursive": "True",
+			"action": "build",
+			"importer": "TextureImporter",
+			"processor": "TextureProcessor",
+			"processorParam":
+			{
+				"ColorKeyColor": "255,0,255,255",
+				"ColorKeyEnabled": "True",
+				"GenerateMipmaps": "False",
+				"PremultiplyAlpha": "True",
+				"ResizeToPowerOfTwo": "False",
+				"MakeSquare": "False",
+				"TextureFormat": "Color"
+			}
+		},
+		"textures":
+		{
+			"path": "$Graphics/*.png",
+			"recursive": "True",
+			"action": "build",
+			"importer": "TextureImporter",
+			"processor": "TextureProcessor",
+			"processorParam":
+			{
+				"ColorKeyColor": "255,0,255,255",
+				"ColorKeyEnabled": "True",
+				"GenerateMipmaps": "False",
+				"PremultiplyAlpha": "True",
+				"ResizeToPowerOfTwo": "False",
+				"MakeSquare": "False",
+				"TextureFormat": "Color"
+			}
+		}
+	}
+}

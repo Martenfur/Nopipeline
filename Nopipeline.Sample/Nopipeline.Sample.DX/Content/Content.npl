@@ -1,0 +1,62 @@
+﻿{
+	"root": "../../Nopipeline.Sample.Content/Content/",
+	"references":
+	[
+		"../../Nopipeline.Sample.Content/bin/Debug/Nopipeline.Sample.Content.dll"
+	],
+	"content":
+	{
+		"commonTextures":
+		{
+			"path": "Graphics/*.png",
+			"recursive": "True",
+			"action": "build",
+			"importer": "TextureImporter",
+			"processor": "TextureProcessor",
+			"processorParam":
+			{
+				"ColorKeyColor": "255,0,255,255",
+				"ColorKeyEnabled": "True",
+				"GenerateMipmaps": "False",
+				"PremultiplyAlpha": "True",
+				"ResizeToPowerOfTwo": "False",
+				"MakeSquare": "False",
+				"TextureFormat": "Color"
+			}
+		},
+
+		// This rule will load graphics from platform-specific projects.
+		"textures":
+		{
+			"path": "$Graphics/*.png", // $ means that 'root' will not be appended to the path.
+			"recursive": "True",
+			"action": "build",
+			"importer": "TextureImporter",
+			"processor": "TextureProcessor",
+			"processorParam":
+			{
+				"ColorKeyColor": "255,0,255,255",
+				"ColorKeyEnabled": "True",
+				"GenerateMipmaps": "False",
+				"PremultiplyAlpha": "True",
+				"ResizeToPowerOfTwo": "False",
+				"MakeSquare": "False",
+				"TextureFormat": "Color"
+			}
+		},
+		"sampleWatch":
+		{
+			"path": "SampleWatch/*.sampleWatch",
+			"recursive": "True",
+			"action": "build",
+			"importer": "SampleWatchImporter",
+			"processor": "PassThroughProcessor",
+			"watch": // sampleWatch files will update whenever any txt file will change.
+			[
+				// Relative to the sampleWatch path.
+				"*.txt"
+			]
+		}
+
+	}
+}
