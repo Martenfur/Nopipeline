@@ -26,7 +26,7 @@ namespace NoPipeline
 
 
 
-		static void Run(string configPath)
+		private static void Run(string configPath)
 		{
 			
 			// Read config file name from the input parameter.
@@ -93,7 +93,7 @@ namespace NoPipeline
 		/// <summary>
 		/// Prints help message.
 		/// </summary>
-		static void PrintHelp()
+		private static void PrintHelp()
 		{
 			Console.WriteLine("Run with path to .mgcb or .npl config as an argument:");
 			Console.WriteLine("    NoPipeline.exe Content/Content.mgcb");
