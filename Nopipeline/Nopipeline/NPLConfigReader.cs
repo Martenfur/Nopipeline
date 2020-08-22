@@ -20,7 +20,7 @@ namespace NoPipeline
 			var rootDir = Path.GetDirectoryName(configPath) + "/";
 
 			var contentJson = (JObject)config["content"];
-			
+
 			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.WriteLine("Reading NPL config.");
 			Console.ForegroundColor = ConsoleColor.Gray;
@@ -33,7 +33,7 @@ namespace NoPipeline
 				Console.WriteLine("Root: " + Content.Root);
 			}
 			catch
-			{ 
+			{
 				Console.WriteLine("No root found! Using paths as is.");
 			}
 			Console.WriteLine();
@@ -48,7 +48,7 @@ namespace NoPipeline
 				// Read section.
 				string sectionName = item.Key;
 				var section = (JObject)item.Value;
-				
+
 				// Read item.
 				string path;
 				try
@@ -61,23 +61,26 @@ namespace NoPipeline
 					throw new Exception($"Key 'path' doesn't exist in  {sectionName}!");
 				}
 				if (path.Contains("../"))
-				{ 
+				{
 					throw new Exception("'path' is not allowed to contain '../'! Use 'root' property to specify a different root instead.");
 				}
 
 				var appendRoot = false;
-				if (path.StartsWith('$'))
-				{ 
-					// $ means that the path will not have the root appended to it.
-					path = path.TrimStart('$');
-					appendRoot = false;
-				}
-				else
+				if (Content.Root != "")
 				{
-					// Appending root now so that we would work with full paths.
-					// We don't care if it's a link or not for now.
-					path = Path.Combine(Content.Root, path);
-					appendRoot = true;
+					if (path.StartsWith('$'))
+					{
+						// $ means that the path will not have the root appended to it.
+						path = path.TrimStart('$');
+						appendRoot = false;
+					}
+					else
+					{
+						// Appending root now so that we would work with full paths.
+						// We don't care if it's a link or not for now.
+						path = Path.Combine(Content.Root, path);
+						appendRoot = true;
+					}
 				}
 
 				Console.ForegroundColor = ConsoleColor.Magenta;
@@ -97,7 +100,7 @@ namespace NoPipeline
 					}
 					files = Directory.GetFiles(Path.Combine(rootDir, filePath), fileName, searchOpt);
 				}
-				catch(Exception e)
+				catch (Exception e)
 				{
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine($"    Error reading files from {rootDir}{filePath}: ");
@@ -113,7 +116,7 @@ namespace NoPipeline
 
 					Console.WriteLine("    Reading " + name);
 
-					foreach(var sect in section)
+					foreach (var sect in section)
 					{
 						if (sect.Key == "path")
 						{ // path - already get - ignore
@@ -122,7 +125,7 @@ namespace NoPipeline
 						if (sect.Key == "processorParam")
 						{ // read processor's parameters
 							JObject processorParam = section["processorParam"] as JObject;
-							foreach(var pp in processorParam)
+							foreach (var pp in processorParam)
 							{
 								newItem.Add("processorParam", $"{pp.Key}={pp.Value}");
 							}
@@ -132,7 +135,7 @@ namespace NoPipeline
 							newItem.Add(sect.Key, sect.Value);
 						}
 					}
-					
+
 					content.AddContentItem(newItem);
 				}
 
@@ -141,7 +144,7 @@ namespace NoPipeline
 			Console.WriteLine();
 			Console.WriteLine("Finished reading NPL config!");
 			Console.WriteLine();
-			
+
 		}
 
 
@@ -161,7 +164,7 @@ namespace NoPipeline
 				var refName = Path.GetFileName(reference);
 				var refPath = Path.GetDirectoryName(reference);
 				var dlls = Directory.GetFiles(Path.Combine(rootDir, refPath), refName, SearchOption.TopDirectoryOnly);
-				foreach(var dll in dlls)
+				foreach (var dll in dlls)
 				{
 					var resultPath = Path.Combine(refPath, Path.GetFileName(dll)).Replace('\\', '/');
 					Console.WriteLine(resultPath);

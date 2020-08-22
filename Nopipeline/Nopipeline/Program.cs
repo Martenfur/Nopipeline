@@ -6,7 +6,7 @@ namespace NoPipeline
 
 	public class Program
 	{
-		public const string Version = "2.0.0.0"; // TODO: Replace
+		public const string Version = "2.0.1.0"; // TODO: Replace
 		
 		public static void Main(string[] args)
 		{
