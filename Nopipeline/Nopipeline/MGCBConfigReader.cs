@@ -36,9 +36,6 @@ namespace NoPipeline
 			Console.WriteLine();
 			Console.ForegroundColor = ConsoleColor.Gray;
 
-			var configPath = MGCBConfigPath;
-			var rootDir = Path.GetDirectoryName(MGCBConfigPath);
-			
 			string line;
 			var collectionState = CollectionStates.Settings;
 			Item item = null;

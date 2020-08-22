@@ -43,6 +43,11 @@ namespace NoPipeline
 		/// File action. Can be build or copy.
 		/// </summary>
 		public string Action = "";
+		
+		/// <summary>
+		/// If true, Path will have Root appended to it.
+		/// </summary>
+		public bool AppendRoot = true;
 
 		/// <summary>
 		/// List of processor parameters.
@@ -84,7 +89,7 @@ namespace NoPipeline
 					Recursive = (string.Compare(value.ToString(), "true", true) == 0);
 					break;
 				case "action":
-					Action = $"/{value.ToString()}:{Path}";
+					Action = $"/{value.ToString()}:{GetLinkedPath()}";
 					break;
 				case "watch":
 					Watch = value.ToObject<List<string>>();
@@ -93,6 +98,15 @@ namespace NoPipeline
 					Parameters.Add($"/{param}:{value.ToString()}");
 					break;
 			}
+		}
+
+		private string GetLinkedPath()
+		{ 
+			if (AppendRoot && Path.StartsWith(Content.Root))
+			{
+				return Path + ";" + Path.Replace(Content.Root, "").TrimStart('/');
+			}
+			return Path;
 		}
 	}
 

@@ -8,7 +8,7 @@
 		<Description>A Content Pipeline addon for Monogame which fully replaces Pipeline UI.</Description>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageId>Nopipeline</PackageId>
+		<PackageId>Nopipeline.Task</PackageId>
 		<Authors>Martenfur</Authors>
 		<Company>Chai Foxes</Company>
 		<Product>Nopipeline</Product>

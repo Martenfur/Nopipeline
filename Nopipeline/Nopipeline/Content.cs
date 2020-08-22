@@ -10,6 +10,14 @@ namespace NoPipeline
 	/// </summary>
 	public class Content
 	{
+		/// <summary>
+		/// Root directory of all content. 
+		/// A 'root' property in the npl config which 
+		/// gets appended to all 'path' properties.
+		/// Unlike 'path', can contain '../'
+		/// </summary>
+		public static string Root = "";
+
 		public int ContentItemsCount => _contentItems.Count;
 		/// <summary>
 		/// All the global settings.

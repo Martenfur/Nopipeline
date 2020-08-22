@@ -11,7 +11,7 @@ namespace NoPipeline
 	 *   conf:JObject - config object
 	 *   content:MGCB - MGCB object
 	 */
-	class NPLConfigReader : IConfigReader
+	public class NPLConfigReader : IConfigReader
 	{
 
 		public void Read(Content content, string configPath)
@@ -25,6 +25,18 @@ namespace NoPipeline
 			Console.WriteLine("Reading NPL config.");
 			Console.ForegroundColor = ConsoleColor.Gray;
 
+
+			Console.WriteLine();
+			try
+			{
+				Content.Root = config["root"].ToString().Replace("\\", "/");
+				Console.WriteLine("Root: " + Content.Root);
+			}
+			catch
+			{ 
+				Console.WriteLine("No root found! Using paths as is.");
+			}
+			Console.WriteLine();
 
 			Console.WriteLine();
 			ParseReferences(config, content);
@@ -41,12 +53,31 @@ namespace NoPipeline
 				string path;
 				try
 				{
-					path = section["path"].ToString();
+					path = section["path"].ToString().Replace("\\", "/");
 				}
 				catch
 				{
 					Console.WriteLine($"Key 'path' doesn't exist in  {sectionName}!");
 					throw new Exception($"Key 'path' doesn't exist in  {sectionName}!");
+				}
+				if (path.Contains("../"))
+				{ 
+					throw new Exception("'path' is not allowed to contain '../'! Use 'root' property to specify a different root instead.");
+				}
+
+				var appendRoot = false;
+				if (path.StartsWith('$'))
+				{ 
+					// $ means that the path will not have the root appended to it.
+					path = path.TrimStart('$');
+					appendRoot = false;
+				}
+				else
+				{
+					// Appending root now so that we would work with full paths.
+					// We don't care if it's a link or not for now.
+					path = Path.Combine(Content.Root, path);
+					appendRoot = true;
 				}
 
 				Console.ForegroundColor = ConsoleColor.Magenta;
@@ -62,7 +93,7 @@ namespace NoPipeline
 					var searchOpt = SearchOption.TopDirectoryOnly;
 					if (section.ContainsKey("recursive"))
 					{
-						searchOpt = (section["recursive"].ToString().ToLower() == "true") ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+						searchOpt = (string.Compare(section["recursive"].ToString(), "true", true) == 0) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 					}
 					files = Directory.GetFiles(Path.Combine(rootDir, filePath), fileName, searchOpt);
 				}
@@ -78,7 +109,8 @@ namespace NoPipeline
 				{
 					var name = file.Remove(0, rootDir.Length).Replace('\\', '/');
 					var newItem = new Item(name);
-					
+					newItem.AppendRoot = appendRoot;
+
 					Console.WriteLine("    Reading " + name);
 
 					foreach(var sect in section)
@@ -110,7 +142,6 @@ namespace NoPipeline
 			Console.WriteLine("Finished reading NPL config!");
 			Console.WriteLine();
 			
-
 		}
 
 
