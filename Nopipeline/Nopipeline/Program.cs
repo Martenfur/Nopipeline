@@ -1,16 +1,19 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 
 namespace Nopipeline
 {
 
 	public class Program
 	{
-		public const string Version = "2.0.1.0"; // TODO: Replace
-		
+		private static string _mgcbConfigPath; 
+		private static string _nplConfigPath;
+
+		private static bool _exit = false;
+
 		public static void Main(string[] args)
 		{
-			Console.WriteLine("NoPipeline v" + Version);
 
 			// Print help information if parameter was not provided.
 			if (args.Length != 1)
@@ -18,45 +21,28 @@ namespace Nopipeline
 				PrintHelp();
 				return;
 			}
-			
+
 			var configPath = Path.Combine(Environment.CurrentDirectory, args[0].Replace("\\", "/"));
 
-			Run(configPath);
+			RestoreConfigs(configPath);
+
+			if (_exit)
+			{ 
+				return;
+			}
+			Run();
 		}
 
 
-
-		private static void Run(string configPath)
+		private static void Run()
 		{
-			
-			// Read config file name from the input parameter.
-
-			string MGCBConfigPath, NPLConfigPath;
-
-			if (configPath.EndsWith(".mgcb"))
-			{
-				MGCBConfigPath = configPath;
-				NPLConfigPath = Path.ChangeExtension(configPath, ".npl");
-			}
-			else
-			{
-				NPLConfigPath = configPath;
-				MGCBConfigPath = Path.ChangeExtension(configPath, ".mgcb");
-			}
-
-			// Check if configuration file exists.
-			if (!File.Exists(NPLConfigPath) || !File.Exists(NPLConfigPath))
-			{
-				Console.WriteLine(NPLConfigPath + " not found!");
-				PrintHelp();
-				return;
-			}
+			Console.WriteLine("Nopipeline v" + Assembly.GetAssembly(typeof(Program)).GetName().Version.ToString());
 
 			var content = new Content();
 			
 			// Create MGCB object to read mgcb file.
 			var MGCBReader = new MGCBConfigReader();
-			MGCBReader.Read(content, MGCBConfigPath);
+			MGCBReader.Read(content, _mgcbConfigPath);
 
 			Console.WriteLine();
 			Console.WriteLine("-------------------------------------");
@@ -65,13 +51,13 @@ namespace Nopipeline
 			// Create ContentProcessor object to read config file and update content
 			// content will be overwrited from config file.
 			var NPLReader = new NPLConfigReader();
-			NPLReader.Read(content, NPLConfigPath);
+			NPLReader.Read(content, _nplConfigPath);
 
 			Console.WriteLine("-------------------------------------");
 			Console.WriteLine();
 
 			// Check all rules in content object and update timestamp of files if required.
-			content.CheckIntegrity(Path.GetDirectoryName(MGCBConfigPath));
+			content.CheckIntegrity(Path.GetDirectoryName(_mgcbConfigPath));
 
 			// Saving MGCB file.
 
@@ -79,16 +65,72 @@ namespace Nopipeline
 			Console.WriteLine("-------------------------------------");
 			Console.WriteLine();
 
-			Console.WriteLine("Saving new config as " + MGCBConfigPath);
+			Console.WriteLine("Saving new config as " + _mgcbConfigPath);
 			Console.WriteLine();
 
-			File.WriteAllText(MGCBConfigPath, content.Build());
+			File.WriteAllText(_mgcbConfigPath, content.Build());
 
 			Console.ForegroundColor = ConsoleColor.Green;
-			Console.WriteLine("Done! \\^u^/");
+			Console.WriteLine("Done. o-o");
 			Console.ForegroundColor = ConsoleColor.Gray;
 
 		}
+
+		private static void RestoreConfigs(string configPath)
+		{
+			// Read config file name from the input parameter.
+			if (configPath.EndsWith(".mgcb"))
+			{
+				_mgcbConfigPath = configPath;
+				_nplConfigPath = Path.ChangeExtension(configPath, ".npl");
+
+				if (File.Exists(_nplConfigPath))
+				{
+					_exit = true;
+					return;
+				}
+			}
+			else
+			{
+				_nplConfigPath = configPath;
+				_mgcbConfigPath = Path.ChangeExtension(configPath, ".mgcb");
+			}
+
+			// Generate empty config files if they're not present.
+			GenerateConfig(_nplConfigPath);
+			GenerateConfig(_mgcbConfigPath);
+		}
+
+
+		/// <summary>
+		/// Retrieves empty npl or mgcb config from embeded resources.
+		/// </summary>
+		private static void GenerateConfig(string path)
+		{
+			if (File.Exists(path))
+			{
+				return;
+			}
+
+			Console.WriteLine("Resources: ");
+			foreach(var s in Assembly.GetAssembly(typeof(Program)).GetManifestResourceNames())
+			{
+				Console.WriteLine(s);
+			}
+			var extension = Path.GetExtension(path);
+			Console.WriteLine("Nopipeline.EmptyContent" + extension + " wat");
+			var stream = Assembly.GetAssembly(typeof(Program)).GetManifestResourceStream("Nopipeline.EmptyContent" + extension);
+			var reader = new StreamReader(stream);
+
+			var configContents = reader.ReadToEnd();
+
+			stream.Dispose();
+			reader.Dispose();
+
+			Directory.CreateDirectory(Path.GetDirectoryName(path));
+			File.WriteAllText(path, configContents);
+		}
+
 
 		/// <summary>
 		/// Prints help message.
@@ -96,9 +138,9 @@ namespace Nopipeline
 		private static void PrintHelp()
 		{
 			Console.WriteLine("Run with path to .mgcb or .npl config as an argument:");
-			Console.WriteLine("    NoPipeline.exe Content/Content.mgcb");
+			Console.WriteLine("    dotnet npl.dll Content/Content.mgcb");
 			Console.WriteLine("or");
-			Console.WriteLine("    NoPipeline.exe Content/Content.npl");
+			Console.WriteLine("    dotnet npl.dll Content/Content.npl");
 		}
 
 	}

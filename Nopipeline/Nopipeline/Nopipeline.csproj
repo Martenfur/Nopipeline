@@ -10,6 +10,11 @@
 		<UseAppHost>true</UseAppHost>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="EmptyContent.mgcb" />
+    <EmbeddedResource Include="EmptyContent.npl" />
+  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

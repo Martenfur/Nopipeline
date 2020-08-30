@@ -105,7 +105,7 @@ namespace Nopipeline
 		public void CheckIntegrity(string rootPath)
 		{
 			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.WriteLine("Checking integrity of the final config. Hold on tight!");
+			Console.WriteLine("Checking integrity of the final config.");
 			Console.WriteLine();
 			Console.ForegroundColor = ConsoleColor.Gray;
 
