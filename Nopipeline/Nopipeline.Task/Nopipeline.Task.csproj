@@ -5,19 +5,11 @@
 		<BaseOutputPath>bin</BaseOutputPath>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-		<Description>A Content Pipeline addon for Monogame which fully replaces Pipeline UI.</Description>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>Nopipeline.Task</PackageId>
-		<Authors>Martenfur</Authors>
-		<Company>Chai Foxes</Company>
-		<Product>Nopipeline</Product>
-		<PackageTags>Monogame, Pipeline</PackageTags>
-		<RepositoryUrl>https://github.com/Martenfur/Nopipeline</RepositoryUrl>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageIcon>icon.png</PackageIcon>
-		<Version>2.0.1</Version>
-		<PackageProjectUrl>https://github.com/Martenfur/Nopipeline</PackageProjectUrl>
 	</PropertyGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Nopipeline\Nopipeline.csproj">
