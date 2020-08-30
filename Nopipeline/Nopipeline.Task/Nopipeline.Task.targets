@@ -1,9 +1,11 @@
-﻿
-<Project InitialTargets="Nopipeline" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project InitialTargets="Nopipeline" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<NPLContentReferences Include="**/*.npl"/>
+		<MGCBContentReferences Include="**/*.mgcb"/>
+	</ItemGroup>
+
 	<Target Name="Nopipeline">
-		<ItemGroup>
-			<NPLContentReferences Include="@(MonoGameContentReference)"/>
-		</ItemGroup>
 		<Exec Command="dotnet $(MSBuildThisFileDirectory)\..\tools\netcoreapp3.1\any\npl.dll &quot;%(NPLContentReferences.FullPath)&quot;" />
+		<Exec Command="dotnet $(MSBuildThisFileDirectory)\..\tools\netcoreapp3.1\any\npl.dll &quot;%(MGCBContentReferences.FullPath)&quot;" />
 	</Target>
 </Project>
