@@ -30,11 +30,15 @@ namespace Nopipeline
 			try
 			{
 				Content.Root = config["root"].ToString().Replace("\\", "/");
+				if (Content.Root.StartsWith("./")) // Ignoring whatever this is. I'm a professional I swear.
+				{
+					Content.Root = Content.Root.Substring(2, Content.Root.Length - 2);
+				}
 				Console.WriteLine("Root: " + Content.Root);
 			}
 			catch
 			{
-				Console.WriteLine("No root found! Using paths as is.");
+				Console.WriteLine("No root found! Using default paths.");
 			}
 			Console.WriteLine();
 
