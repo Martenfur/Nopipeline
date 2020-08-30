@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace NoPipeline
+namespace Nopipeline
 {
 	public enum CollectionStates
 	{

@@ -1,5 +1,5 @@
 ﻿
-namespace NoPipeline
+namespace Nopipeline
 {
 	public static class ContentStructure
 	{

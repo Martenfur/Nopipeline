@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json.Linq;
 
-namespace NoPipeline
+namespace Nopipeline
 {
 	/*
 	 * ContentProcessor class reads json configuration file and update MGCB object

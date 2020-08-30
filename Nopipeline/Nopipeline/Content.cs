@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace NoPipeline
+namespace Nopipeline
 {
 	/// <summary>
 	/// MGCB config object. Everything is merged in here.
