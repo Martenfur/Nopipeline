@@ -26,8 +26,9 @@ Nopipeline is not a Pipeline Tool replacement - it's an addon. Its only function
 
 ## Now we're talking. How do I integrate this thing in my project?
 
-First of all, install the `Nopipeline.Task` via Nuget. After that, you will need a NPL config. NPL config is what Nopipeline uses to generate MGCB config. It looks like this:
+First of all, install the `Nopipeline.Task` via Nuget. After that, you will need a NPL config. NPL config is what Nopipeline uses to generate MGCB config. Nopipeline will generate an empty NPL config automaticaly on first build. After that, you can just delete MGCB config. Yep, that's right, you don't need it anymore - Nopipeline will generate a new MGCB automatically. I also recommend adding your `.mgcb` files to the gitignore. 
 
+Now you need to understand how NPL config works and fill it up with rules so that Nopipeline would know what content goes where. NPL config looks like this:
 
 ```json
 {
@@ -61,9 +62,9 @@ First of all, install the `Nopipeline.Task` via Nuget. After that, you will need
 	}
 }
 ```
-NPL config is essentially a JSON. Config above has two file groups: `textures` 
-and `specificFile`. Each file group describes one specific resource type. 
-File groups can contain whole directories or single files.
+It is essentially a JSON. Config above has two content rules: `textures` 
+and `specificFile`. Each rule describes one specific resource type. 
+Rules can affect entire directories or specific files.
 
 
 Let's look at an each parameter:
@@ -74,14 +75,15 @@ Here are some examples:
 	- `Graphics/Textures/*.png` will grab any `.png` file.
 	- `Graphics/Textures/*` will grab any file in the `Textures` directory.
 	- `$Graphics/Textures/*` will ignore `root` property. 
+	**NOTE**: Rule paths cannot contain `../`. Use `root` if you need those.
 - `recursive` tells Nopipeline to include resource files from subdirectories.
 For example, if set to `True`, and the `path` is `Graphics/Textures/*.png`,
 files from `Graphics/Textures/Subdir/` will be grabbed as well. If set to 
 `False`, they will be ignored.
-- `action` tells what action has to be done for this file group. Can be `build`
+- `action` tells what action has to be done for this rule. Can be `build`
 or `copy`.
-- `importer` tells what importer should be used for building.
-- `processor` tells what processor should be used for building.
+- `importer` tells what importer should be used for building. Ignored if `action` is set to `copy`.
+- `processor` tells what processor should be used for building. Ignored if `action` is set to `copy`.
 - `processorParam` is an optional list of processor parameters, if resource 
 has any.
 
