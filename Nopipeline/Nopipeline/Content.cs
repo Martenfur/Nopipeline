@@ -19,6 +19,7 @@ namespace Nopipeline
 		public static string Root = "";
 
 		public int ContentItemsCount => _contentItems.Count;
+
 		/// <summary>
 		/// All the global settings.
 		/// TODO: Add support in the NPL config.
@@ -33,7 +34,7 @@ namespace Nopipeline
 		/// <summary>
 		/// Actual content items.
 		/// </summary>
-		private Dictionary<string, Item> _contentItems = new Dictionary<string, Item>();
+		public Dictionary<string, Item> _contentItems = new Dictionary<string, Item>();
 		
 
 		public string Build()
@@ -75,7 +76,6 @@ namespace Nopipeline
 			_globalSettings.AppendLine(setting);
 
 
-
 		public void AddContentItem(Item item)
 		{
 			if (_contentItems.ContainsKey(item.Path))
@@ -102,9 +102,9 @@ namespace Nopipeline
 		/// <summary>
 		/// Checks if content files exist and checks watched files.
 		/// </summary>
-		public void CheckIntegrity(string rootPath)
+		public void CheckIntegrity(WatchSnapshot snapshot, string rootPath)
 		{
-			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.ForegroundColor = ConsoleColor.Yellow; // TODO: Remove console colors.
 			Console.WriteLine("Checking integrity of the final config.");
 			Console.WriteLine();
 			Console.ForegroundColor = ConsoleColor.Gray;
@@ -113,14 +113,12 @@ namespace Nopipeline
 
 			foreach (Item item in _contentItems.Values)
 			{
-				Console.WriteLine("Checking " + Path.Combine(rootPath, item.Path));
+				var fullItemPath = Path.Combine(rootPath, item.Path);
+				Console.WriteLine("Checking " + fullItemPath);
 
 				// Don't include if the file doesn't exist.
-				if (File.Exists(Path.Combine(rootPath, item.Path)))
+				if (File.Exists(fullItemPath))
 				{
-
-					DateTime itemLastModified = File.GetLastWriteTime(Path.Combine(rootPath, item.Path));
-					
 					var relativeItemPath = Path.Combine(rootPath, Path.GetDirectoryName(item.Path));
 
 					// Watched files are files which aren't tracked by the content pipeline.
@@ -151,12 +149,10 @@ namespace Nopipeline
 						foreach (var file in files)
 						{
 							Console.WriteLine("Checking " + file);
-							DateTime fileLastModified = File.GetLastWriteTime(file);
-							DateTime fileCreationTime = File.GetCreationTime(file);
-
-							if (itemLastModified < fileLastModified || itemLastModified < fileCreationTime)
+							
+							if (!snapshot.CheckMatch(file))
 							{
-								Console.WriteLine("Modifying: " + file);
+								Console.WriteLine("FOUND MODIFIED: " + file);
 								File.SetLastWriteTime(Path.Combine(rootPath, item.Path), DateTime.Now);
 								break;
 							}
@@ -203,5 +199,6 @@ namespace Nopipeline
 				builder.Remove(builder.Length - Environment.NewLine.Length, Environment.NewLine.Length);
 			}
 		}
+
 	}
 }

@@ -38,7 +38,9 @@ namespace Nopipeline
 		{
 			Console.WriteLine("Nopipeline v" + Assembly.GetAssembly(typeof(Program)).GetName().Version.ToString());
 
+			var rootPath = Path.GetDirectoryName(_mgcbConfigPath);
 			var content = new Content();
+			var snapshot = new WatchSnapshot(content, rootPath);
 			
 			// Create MGCB object to read mgcb file.
 			var MGCBReader = new MGCBConfigReader();
@@ -57,7 +59,8 @@ namespace Nopipeline
 			Console.WriteLine();
 
 			// Check all rules in content object and update timestamp of files if required.
-			content.CheckIntegrity(Path.GetDirectoryName(_mgcbConfigPath));
+			content.CheckIntegrity(snapshot, rootPath);
+			snapshot.WriteSnapshot();
 
 			// Saving MGCB file.
 
