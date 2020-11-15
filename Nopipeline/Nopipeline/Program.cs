@@ -73,9 +73,7 @@ namespace Nopipeline
 
 			File.WriteAllText(_mgcbConfigPath, content.Build());
 
-			Console.ForegroundColor = ConsoleColor.Green;
 			Console.WriteLine("Done. o-o");
-			Console.ForegroundColor = ConsoleColor.Gray;
 
 		}
 

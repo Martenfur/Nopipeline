@@ -21,9 +21,7 @@ namespace Nopipeline
 
 			var contentJson = (JObject)config["content"];
 
-			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.WriteLine("Reading NPL config.");
-			Console.ForegroundColor = ConsoleColor.Gray;
 
 
 			Console.WriteLine();
@@ -87,9 +85,7 @@ namespace Nopipeline
 					}
 				}
 
-				Console.ForegroundColor = ConsoleColor.Magenta;
 				Console.WriteLine("Reading content for: " + path);
-				Console.ForegroundColor = ConsoleColor.Gray;
 
 				var fileName = Path.GetFileName(path);
 				var filePath = Path.GetDirectoryName(path);
@@ -106,10 +102,8 @@ namespace Nopipeline
 				}
 				catch (Exception e)
 				{
-					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine($"    Error reading files from {rootDir}{filePath}: ");
 					Console.WriteLine("    " + e.Message);
-					Console.ForegroundColor = ConsoleColor.Gray;
 				}
 
 				foreach (var file in files)

@@ -19,7 +19,7 @@ namespace Nopipeline
 		{
 			_content = content;
 			_rootPath = rootPath;
-
+			
 			_tempSnapshotPath = Path.Combine(_rootPath, "bin/watch.npl.temp");
 			_tempSnapshotDirectory = Path.GetDirectoryName(Path.GetDirectoryName(_tempSnapshotPath));
 			ReadSnapshot();
@@ -34,7 +34,7 @@ namespace Nopipeline
 			Path.GetFullPath(path) + " | " + File.GetLastWriteTime(path);
 
 
-		public void ReadSnapshot()
+		private void ReadSnapshot()
 		{
 			if (!File.Exists(_tempSnapshotPath))
 			{
@@ -43,49 +43,35 @@ namespace Nopipeline
 			var snapshotItems = File.ReadAllLines(_tempSnapshotPath);
 			foreach (var item in snapshotItems)
 			{
-				if (_oldSnapshot.Contains(item))
-				{
-					_oldSnapshot.Add(item);
-				}
+				_oldSnapshot.Add(item);
 			}
 		}
 
 		public void WriteSnapshot()
 		{
-			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.WriteLine("Dumping!");
-			Console.WriteLine();
-			Console.ForegroundColor = ConsoleColor.Gray;
+			var contents = new HashSet<string>();
 
-			var contents = new List<string>();
-
-			foreach (Item item in _content._contentItems.Values)
+			foreach (var item in _content._contentItems.Values)
 			{
-				Console.WriteLine("Checking " + Path.Combine(_rootPath, item.Path));
-
 				// Don't include if the file doesn't exist.
 				if (File.Exists(Path.Combine(_rootPath, item.Path)))
 				{
-
 					var relativeItemPath = Path.Combine(_rootPath, Path.GetDirectoryName(item.Path));
 
 					foreach (var checkWildcard in item.Watch)
 					{
-						Console.WriteLine("Checking watch for " + checkWildcard);
 
 						var fileName = Path.GetFileName(checkWildcard);
 						var filePath = Path.GetDirectoryName(checkWildcard);
 
 						string[] files;
 
-						Console.WriteLine("Checking wildcars for: " + Path.Combine(relativeItemPath, filePath));
 						try
 						{
 							files = Directory.GetFiles(Path.Combine(relativeItemPath, filePath), fileName, SearchOption.AllDirectories);
 						}
 						catch
 						{
-							Console.WriteLine(checkWildcard + " wasn't found. Skipping.");
 							continue;
 						}
 
@@ -98,9 +84,7 @@ namespace Nopipeline
 				}
 				else
 				{
-					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine(item.Path + " doesn't exist anymore. Removing it from the config.");
-					Console.ForegroundColor = ConsoleColor.Gray;
 				}
 			}
 

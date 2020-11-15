@@ -31,10 +31,8 @@ namespace Nopipeline
 		
 		public void Read(Content content, string MGCBConfigPath)
 		{
-			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.WriteLine("Reading MGCB config " + MGCBConfigPath);
 			Console.WriteLine();
-			Console.ForegroundColor = ConsoleColor.Gray;
 
 			string line;
 			var collectionState = CollectionStates.Settings;

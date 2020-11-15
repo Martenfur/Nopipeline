@@ -104,10 +104,8 @@ namespace Nopipeline
 		/// </summary>
 		public void CheckIntegrity(WatchSnapshot snapshot, string rootPath)
 		{
-			Console.ForegroundColor = ConsoleColor.Yellow; // TODO: Remove console colors.
 			Console.WriteLine("Checking integrity of the final config.");
 			Console.WriteLine();
-			Console.ForegroundColor = ConsoleColor.Gray;
 
 			var checkedItems = new Dictionary<string, Item>();
 
@@ -163,9 +161,7 @@ namespace Nopipeline
 				}
 				else
 				{
-					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine(item.Path + " doesn't exist anymore. Removing it from the config.");
-					Console.ForegroundColor = ConsoleColor.Gray;
 				}
 			}
 			_contentItems = checkedItems;
@@ -182,9 +178,7 @@ namespace Nopipeline
 				}
 				else
 				{
-					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine(reference + " wasn't found! Deleting it from the config.");
-					Console.ForegroundColor = ConsoleColor.Gray;
 				}
 			}
 			_references = checkedReferences;
