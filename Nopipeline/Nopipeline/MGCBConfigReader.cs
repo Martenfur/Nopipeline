@@ -110,7 +110,7 @@ namespace Nopipeline
 				}
 			}
 
-			Console.WriteLine("Finished reading MGCB config! Got " + content.ContentItemsCount + " items.");
+			Console.WriteLine("Finished reading MGCB config! Got " + content.ContentItems.Count + " items.");
 			
 		}
 		

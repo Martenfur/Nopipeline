@@ -51,7 +51,7 @@ namespace Nopipeline
 		{
 			var contents = new HashSet<string>();
 
-			foreach (var item in _content._contentItems.Values)
+			foreach (var item in _content.ContentItems.Values)
 			{
 				// Don't include if the file doesn't exist.
 				if (File.Exists(Path.Combine(_rootPath, item.Path)))

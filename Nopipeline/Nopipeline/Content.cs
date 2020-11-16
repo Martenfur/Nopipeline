@@ -18,8 +18,6 @@ namespace Nopipeline
 		/// </summary>
 		public static string Root = "";
 
-		public int ContentItemsCount => _contentItems.Count;
-
 		/// <summary>
 		/// All the global settings.
 		/// TODO: Add support in the NPL config.
@@ -34,7 +32,7 @@ namespace Nopipeline
 		/// <summary>
 		/// Actual content items.
 		/// </summary>
-		public Dictionary<string, Item> _contentItems = new Dictionary<string, Item>();
+		public Dictionary<string, Item> ContentItems = new Dictionary<string, Item>();
 		
 
 		public string Build()
@@ -62,7 +60,7 @@ namespace Nopipeline
 			builder.AppendLine();
 
 			// Items.
-			foreach (var item in _contentItems.Values)
+			foreach (var item in ContentItems.Values)
 			{
 				builder.Append(item.ToString());
 			}
@@ -78,13 +76,13 @@ namespace Nopipeline
 
 		public void AddContentItem(Item item)
 		{
-			if (_contentItems.ContainsKey(item.Path))
+			if (ContentItems.ContainsKey(item.Path))
 			{
-				_contentItems[item.Path] = item;
+				ContentItems[item.Path] = item;
 			}
 			else
 			{
-				_contentItems.Add(item.Path, item);
+				ContentItems.Add(item.Path, item);
 			}
 		}
 
@@ -109,7 +107,7 @@ namespace Nopipeline
 
 			var checkedItems = new Dictionary<string, Item>();
 
-			foreach (Item item in _contentItems.Values)
+			foreach (Item item in ContentItems.Values)
 			{
 				var fullItemPath = Path.Combine(rootPath, item.Path);
 				Console.WriteLine("Checking " + fullItemPath);
@@ -164,7 +162,7 @@ namespace Nopipeline
 					Console.WriteLine(item.Path + " doesn't exist anymore. Removing it from the config.");
 				}
 			}
-			_contentItems = checkedItems;
+			ContentItems = checkedItems;
 
 			Console.WriteLine();
 
