@@ -5,7 +5,7 @@
 	</ItemGroup>
 
 	<Target Name="Nopipeline">
-		<Exec Command="dotnet $(MSBuildThisFileDirectory)\..\tools\netcoreapp3.1\any\npl.dll &quot;%(NPLContentReferences.FullPath)&quot;" />
-		<Exec Command="dotnet $(MSBuildThisFileDirectory)\..\tools\netcoreapp3.1\any\npl.dll &quot;%(MGCBContentReferences.FullPath)&quot;" />
+		<Exec Command="dotnet $(MSBuildThisFileDirectory)/../tools/netcoreapp3.1/any/npl.dll &quot;%(NPLContentReferences.FullPath)&quot;" />
+		<Exec Command="dotnet $(MSBuildThisFileDirectory)/../tools/netcoreapp3.1/any/npl.dll &quot;%(MGCBContentReferences.FullPath)&quot;" />
 	</Target>
 </Project>
