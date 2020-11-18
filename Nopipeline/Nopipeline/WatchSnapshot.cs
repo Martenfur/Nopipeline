@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -9,7 +10,7 @@ namespace Nopipeline
 		private Content _content;
 		private string _rootPath;
 
-		private HashSet<string> _oldSnapshot = new HashSet<string>();
+		private Dictionary<string, HashSet<string>> _oldSnapshot = new Dictionary<string, HashSet<string>>();
 
 		private readonly string _tempSnapshotPath;
 		private readonly string _tempSnapshotDirectory;
@@ -19,15 +20,53 @@ namespace Nopipeline
 		{
 			_content = content;
 			_rootPath = rootPath;
-			
+
 			_tempSnapshotPath = Path.Combine(_rootPath, "bin/watch.npl.temp");
 			_tempSnapshotDirectory = Path.GetDirectoryName(Path.GetDirectoryName(_tempSnapshotPath));
 			ReadSnapshot();
 		}
 
 
-		public bool CheckMatch(string path) =>
-			_oldSnapshot.Contains(GetFileId(path));
+		public bool CheckMatch(Item item)
+		{
+			if (item.Watch.Count == 0)
+			{ 
+				return true;
+			}
+
+			var fullItemPath = Path.Combine(_rootPath, Path.GetDirectoryName(item.Path));
+			var watchRecords = new HashSet<string>();
+
+			foreach (var checkWildcard in item.Watch)
+			{
+
+				var fileName = Path.GetFileName(checkWildcard);
+				var filePath = Path.GetDirectoryName(checkWildcard);
+
+				string[] files;
+
+				try
+				{
+					files = Directory.GetFiles(Path.Combine(fullItemPath, filePath), fileName, SearchOption.AllDirectories);
+				}
+				catch
+				{
+					continue;
+				}
+
+				foreach (var file in files)
+				{
+					watchRecords.Add(GetFileId(file));
+				}
+			}
+
+			if (_oldSnapshot.TryGetValue(Path.GetFullPath(item.Path), out var watchItems))
+			{
+				return watchItems.SetEquals(watchRecords); // TODO: Rename.
+			}
+
+			return false;
+		}
 
 
 		private string GetFileId(string path) =>
@@ -40,23 +79,31 @@ namespace Nopipeline
 			{
 				return;
 			}
-			var snapshotItems = File.ReadAllLines(_tempSnapshotPath);
-			foreach (var item in snapshotItems)
+			_oldSnapshot = JsonConvert.DeserializeObject<Dictionary<string, HashSet<string>>>(File.ReadAllText(_tempSnapshotPath));
+
+			foreach (var kok in _oldSnapshot) // TODO: REMOVE
 			{
-				_oldSnapshot.Add(item);
+				Console.WriteLine("AAAAAAAAAAAAAA" + kok.Key + " " + kok.Value);
 			}
 		}
 
 		public void WriteSnapshot()
 		{
-			var contents = new HashSet<string>();
+			var contents = new Dictionary<string, HashSet<string>>();
 
 			foreach (var item in _content.ContentItems.Values)
 			{
+				Console.WriteLine("Dumping: " + item.Path + " | " + item.Watch.Count);
+				if (item.Watch.Count == 0)
+				{
+					continue;
+				}
+
 				// Don't include if the file doesn't exist.
 				if (File.Exists(Path.Combine(_rootPath, item.Path)))
 				{
 					var relativeItemPath = Path.Combine(_rootPath, Path.GetDirectoryName(item.Path));
+					var watchRecords = new HashSet<string>();
 
 					foreach (var checkWildcard in item.Watch)
 					{
@@ -77,10 +124,11 @@ namespace Nopipeline
 
 						foreach (var file in files)
 						{
-							contents.Add(GetFileId(file));
+							watchRecords.Add(GetFileId(file));
 						}
 					}
 
+					contents.Add(Path.GetFullPath(item.Path), watchRecords);
 				}
 				else
 				{
@@ -94,7 +142,8 @@ namespace Nopipeline
 			{
 				Directory.CreateDirectory(_tempSnapshotDirectory);
 			}
-			File.WriteAllLines(_tempSnapshotPath, contents);
+
+			File.WriteAllText(_tempSnapshotPath, JsonConvert.SerializeObject(contents));
 
 		}
 

@@ -33,7 +33,7 @@ namespace Nopipeline
 		/// Actual content items.
 		/// </summary>
 		public Dictionary<string, Item> ContentItems = new Dictionary<string, Item>();
-		
+
 
 		public string Build()
 		{
@@ -112,55 +112,21 @@ namespace Nopipeline
 				var fullItemPath = Path.Combine(rootPath, item.Path);
 				Console.WriteLine("Checking " + fullItemPath);
 
-				// Don't include if the file doesn't exist.
 				if (File.Exists(fullItemPath))
 				{
-					var relativeItemPath = Path.Combine(rootPath, Path.GetDirectoryName(item.Path));
-
-					// Watched files are files which aren't tracked by the content pipeline.
-					// But they are tracked by us! We look which files were recently modified
-					// and, if their modification date is more recent than the date of tracked file,
-					// we "modify" the tracked file by changing its Last Modified date. This way 
-					// Pipeline thinks the file has been updated and rebuilds it.
-					foreach (var checkWildcard in item.Watch)
-					{
-						Console.WriteLine("Checking watch for " + checkWildcard);
-
-						var fileName = Path.GetFileName(checkWildcard);
-						var filePath = Path.GetDirectoryName(checkWildcard);
-
-						string[] files;
-
-						Console.WriteLine("Checking wildcars for: " + Path.Combine(relativeItemPath, filePath));
-						try
-						{
-							files = Directory.GetFiles(Path.Combine(relativeItemPath, filePath), fileName, SearchOption.AllDirectories);
-						}
-						catch
-						{
-							Console.WriteLine(checkWildcard + " wasn't found. Skipping.");
-							continue;
-						}
-
-						foreach (var file in files)
-						{
-							Console.WriteLine("Checking " + file);
-							
-							if (!snapshot.CheckMatch(file))
-							{
-								Console.WriteLine("FOUND MODIFIED: " + file);
-								File.SetLastWriteTime(Path.Combine(rootPath, item.Path), DateTime.Now);
-								break;
-							}
-						}
-					}
-					
 					checkedItems.Add(item.Path, item);
 				}
-				else
+
+				// Watched files are files which aren't tracked by the content pipeline.
+				// But they are tracked by us! We look at the watched files and, if any of them were added, deleted or modified,
+				// we "modify" the tracked file by changing its Last Modified date. This way 
+				// Pipeline thinks the file has been updated and rebuilds it.
+				if (!snapshot.CheckMatch(item))
 				{
-					Console.WriteLine(item.Path + " doesn't exist anymore. Removing it from the config.");
+					Console.WriteLine("WATCHED FILES WERE MODIFIED FOR: " + item.Path);
+					File.SetLastWriteTime(Path.Combine(rootPath, item.Path), DateTime.Now);
 				}
+
 			}
 			ContentItems = checkedItems;
 
@@ -186,7 +152,7 @@ namespace Nopipeline
 
 		private void RemoveTrailingBlankLines(StringBuilder builder)
 		{
-			while(builder.ToString().EndsWith(Environment.NewLine))
+			while (builder.ToString().EndsWith(Environment.NewLine))
 			{
 				builder.Remove(builder.Length - Environment.NewLine.Length, Environment.NewLine.Length);
 			}
