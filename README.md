@@ -110,7 +110,7 @@ There is also an optional `watch` parameter. Its usage looks like this:
 	}
 }
 ```
-With `watch` parameter present, all the `.spritegoup` files will be built by Pipeline Tool, if any `.png` or `.json` file will be changed. Note that all the paths listed in `watch` are relative to the main `path`, so final paths  will look like this: `Graphics/Default/*.png`.
+With `watch` parameter present, all the `.spritegroup` files will be built by Pipeline Tool, if any `.png` or `.json` file will be changed. Note that all the paths listed in `watch` are relative to the main `path`, so final paths  will look like this: `Graphics/Default/*.png`.
 
 But that's not all. Nopipeline also provides an extended reference management. Add `references` section into your `.npl` config like this:
 
