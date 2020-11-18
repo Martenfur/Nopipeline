@@ -73,7 +73,10 @@ namespace Nopipeline
 
 			File.WriteAllText(_mgcbConfigPath, content.Build());
 
-			Console.WriteLine("Done. o-o");
+			Console.WriteLine("DONE. o-o");
+			Console.WriteLine();
+			Console.WriteLine();
+			Console.WriteLine();
 
 		}
 
