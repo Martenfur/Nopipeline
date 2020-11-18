@@ -139,7 +139,7 @@ namespace Nopipeline
 
 			Console.WriteLine();
 
-			if (Directory.Exists(_tempSnapshotDirectory))
+			if (!Directory.Exists(_tempSnapshotDirectory))
 			{
 				Directory.CreateDirectory(_tempSnapshotDirectory);
 			}
