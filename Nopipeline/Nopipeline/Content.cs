@@ -115,16 +115,16 @@ namespace Nopipeline
 				if (File.Exists(fullItemPath))
 				{
 					checkedItems.Add(item.Path, item);
-				}
 
-				// Watched files are files which aren't tracked by the content pipeline.
-				// But they are tracked by us! We look at the watched files and, if any of them were added, deleted or modified,
-				// we "modify" the tracked file by changing its Last Modified date. This way 
-				// Pipeline thinks the file has been updated and rebuilds it.
-				if (!snapshot.CheckMatch(item))
-				{
-					Console.WriteLine("WATCHED FILES WERE MODIFIED FOR: " + item.Path);
-					File.SetLastWriteTime(Path.Combine(rootPath, item.Path), DateTime.Now);
+					// Watched files are files which aren't tracked by the content pipeline.
+					// But they are tracked by us! We look at the watched files and, if any of them were added, deleted or modified,
+					// we "modify" the tracked file by changing its Last Modified date. This way 
+					// Pipeline thinks the file has been updated and rebuilds it.
+					if (!snapshot.CheckMatch(item))
+					{
+						Console.WriteLine("Watched filed were modified! Updating: " + item.Path);
+						File.SetLastWriteTime(Path.Combine(rootPath, item.Path), DateTime.Now);
+					}
 				}
 
 			}
