@@ -22,7 +22,7 @@ namespace Nopipeline
 			_rootPath = rootPath;
 
 			_tempSnapshotPath = Path.Combine(_rootPath, "bin/watch.npl.temp");
-			_tempSnapshotDirectory = Path.GetDirectoryName(Path.GetDirectoryName(_tempSnapshotPath));
+			_tempSnapshotDirectory = Path.GetDirectoryName(_tempSnapshotPath);
 			ReadSnapshot();
 		}
 
