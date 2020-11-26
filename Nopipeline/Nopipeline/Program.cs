@@ -16,7 +16,7 @@ namespace Nopipeline
 		{
 
 			// Print help information if parameter was not provided.
-			if (args.Length != 1)
+			if (args.Length != 1 || args[0] == "")
 			{
 				PrintHelp();
 				return;
