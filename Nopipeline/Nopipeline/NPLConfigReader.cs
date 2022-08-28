@@ -44,6 +44,10 @@ namespace Nopipeline
 			ParseReferences(config, content, rootDir);
 			Console.WriteLine();
 
+			if (config.ContainsKey("contentlist"))
+			{
+				content.CreateContentList = config["contentlist"].ToObject<bool>();
+			}
 
 			foreach (var item in contentJson)
 			{
@@ -111,6 +115,7 @@ namespace Nopipeline
 					var name = file.Remove(0, rootDir.Length).Replace('\\', '/');
 					var newItem = new Item(name);
 					newItem.AppendRoot = appendRoot;
+					newItem.Add("section", sectionName);
 
 					Console.WriteLine("    Reading " + name);
 

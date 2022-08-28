@@ -54,12 +54,29 @@ namespace Nopipeline
 		/// </summary>
 		public List<string> Parameters;
 
+		/// <summary>
+		/// The processor used for this item
+		/// </summary>
+		public string Processor;
+
+		/// <summary>
+		/// The section this item belongs to
+		/// </summary>
+		public string Section;
+
+		/// <summary>
+		/// Should this item be included in the ContentList
+		/// </summary>
+		public bool IncludeContentList;
+
 		public Item(string path)
 		{
 			Path = path;
 			Parameters = new List<string>();
 			Recursive = false;
 			Watch = new List<string>();
+			Processor = "Notdefined;";
+			IncludeContentList = true;
 		}
 
 		public override string ToString()
@@ -77,6 +94,11 @@ namespace Nopipeline
 
 			return builder.ToString();
 		}
+
+		public string ToContentListItem()
+		{
+			return  $"new ContentListItem(\"{Section}\",\"{Path.Replace('\\', '/').Remove(Path.LastIndexOf("."))}\",\"{Processor}\"),";
+		}
 		
 		public void Add(string param, JToken value)
 		{
@@ -93,6 +115,15 @@ namespace Nopipeline
 					break;
 				case "watch":
 					Watch = value.ToObject<List<string>>();
+					break;
+				case "processor":
+					Processor = value.ToString();
+					goto default; // processor is also used as parameter
+				case "section":
+					Section = value.ToString();
+					break;
+				case "contentlist":
+					IncludeContentList = value.ToObject<bool>();
 					break;
 				default:
 					Parameters.Add($"/{param}:{value.ToString()}");

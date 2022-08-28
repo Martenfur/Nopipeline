@@ -1,9 +1,9 @@
 ﻿{
 	"root": "",
-	"references":
-	[
+	"references": [
 
 	],
+	"contentlist" :  "False",
 	"content":
 	{
 		"textures":
@@ -13,6 +13,7 @@
 			"action": "build",
 			"importer": "TextureImporter",
 			"processor": "TextureProcessor",
+			"contentlist" :  "True",
 			"processorParam":
 			{
 				"ColorKeyColor": "255,0,255,255",

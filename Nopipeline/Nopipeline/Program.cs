@@ -72,6 +72,18 @@ namespace Nopipeline
 			Console.WriteLine();
 
 			File.WriteAllText(_mgcbConfigPath, content.Build());
+	
+			if (content.CreateContentList)
+			{
+				Console.WriteLine("Creating ContentList in " + "ContentList.cs");
+				Console.WriteLine();
+
+				File.WriteAllText("ContentList.cs", content.BuildContentList());
+			}
+			else
+			{
+				Console.WriteLine("Skipping ContentList");
+			}
 
 			Console.WriteLine("DONE. o-o");
 			Console.WriteLine();

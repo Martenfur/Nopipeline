@@ -10,6 +10,7 @@
 		<PackageId>Nopipeline.Task</PackageId>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageIcon>icon.png</PackageIcon>
+		<Version>2.1.6</Version>
 	</PropertyGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Nopipeline\Nopipeline.csproj">

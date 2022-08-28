@@ -34,6 +34,62 @@ namespace Nopipeline
 		/// </summary>
 		public Dictionary<string, Item> ContentItems = new Dictionary<string, Item>();
 
+		/// <summary>
+		/// Do we need to build a ContentList ?
+		/// </summary>
+		public bool CreateContentList = false;
+
+		public string BuildContentList()
+		{
+			var builder = new StringBuilder();
+			builder.AppendLine("using System.Collections.Generic;");
+			builder.AppendLine("namespace MgContentList");
+			builder.AppendLine("{");
+			builder.AppendLine($"\tpublic class ContentList");
+			builder.AppendLine($"\t{{");
+			builder.AppendLine($"\t\tpublic class ContentListItem");
+			builder.AppendLine($"\t\t{{");
+			builder.AppendLine($"\t\t\tpublic ContentListItem(string s, string n, string t) => (Section, Name, Type) = (s, n, t);");
+			builder.AppendLine($"\t\t\tpublic string Section;");
+			builder.AppendLine($"\t\t\tpublic string Name;");
+			builder.AppendLine($"\t\t\tpublic string Type;");
+			builder.AppendLine($"\t\t}}");
+			builder.AppendLine($"\t\tpublic List<ContentListItem> Clist = new()");
+			builder.AppendLine($"\t\t{{");
+
+			bool itemPresent = false;
+			foreach (var item in ContentItems.Values)
+			{
+				if (!item.IncludeContentList)
+				{
+					continue;
+				}
+				if (itemPresent) 
+				{
+					builder.Append($"{System.Environment.NewLine}");
+				}
+				else
+				{
+					itemPresent = true;
+				}
+				builder.Append($"\t\t\t");
+				builder.Append(item.ToContentListItem());
+			}
+
+			if (itemPresent)
+			{
+				builder.Length--; // remove trailing comma
+			}
+			builder.Append($"{System.Environment.NewLine}");
+			builder.AppendLine($"\t\t}};");
+			builder.AppendLine($"\t}}");
+			builder.AppendLine("}");
+
+			RemoveTrailingBlankLines(builder);
+
+			return builder.ToString();
+		}
+
 
 		public string Build()
 		{
