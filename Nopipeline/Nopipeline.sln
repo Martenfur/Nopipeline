@@ -1,11 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30320.27
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nopipeline", "Nopipeline\Nopipeline.csproj", "{126869BE-CEE7-4D02-870B-D9AA9E29845D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nopipeline.Task", "Nopipeline.Task\Nopipeline.Task.csproj", "{74FF963A-E14D-4539-ADFF-C181BC4584A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nopipeline.Task", "Nopipeline.Task\Nopipeline.Task.csproj", "{74FF963A-E14D-4539-ADFF-C181BC4584A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{CF9BDCC6-A0D6-4696-AE50-8E3DF96C19FE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nopipeline.Sample.GL", "..\Nopipeline.Sample\Nopipeline.Sample.GL\Nopipeline.Sample.GL.csproj", "{ABCC134B-BBAD-45B2-9CED-41C6A890B566}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nopipeline.Sample.DX", "..\Nopipeline.Sample\Nopipeline.Sample.DX\Nopipeline.Sample.DX.csproj", "{0D73F677-F001-4293-9928-23484942CAD6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nopipeline.Sample", "..\Nopipeline.Sample\Nopipeline.Sample\Nopipeline.Sample.csproj", "{67A1E5B3-9D8B-463D-8FFB-E89ECDDF9B16}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nopipeline.Sample.Content", "..\Nopipeline.Sample\Nopipeline.Sample.Content\Nopipeline.Sample.Content.csproj", "{0ABA3B05-C49A-4BD0-B56E-26C6BF1E9D69}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_", "_", "{9454C44F-E170-4EAE-AD12-93D91F360B29}"
+	ProjectSection(SolutionItems) = preProject
+		..\Directory.Build.props = ..\Directory.Build.props
+		..\Nuget.props = ..\Nuget.props
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +38,31 @@ Global
 		{74FF963A-E14D-4539-ADFF-C181BC4584A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74FF963A-E14D-4539-ADFF-C181BC4584A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74FF963A-E14D-4539-ADFF-C181BC4584A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABCC134B-BBAD-45B2-9CED-41C6A890B566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABCC134B-BBAD-45B2-9CED-41C6A890B566}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABCC134B-BBAD-45B2-9CED-41C6A890B566}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABCC134B-BBAD-45B2-9CED-41C6A890B566}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D73F677-F001-4293-9928-23484942CAD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D73F677-F001-4293-9928-23484942CAD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D73F677-F001-4293-9928-23484942CAD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D73F677-F001-4293-9928-23484942CAD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67A1E5B3-9D8B-463D-8FFB-E89ECDDF9B16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67A1E5B3-9D8B-463D-8FFB-E89ECDDF9B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67A1E5B3-9D8B-463D-8FFB-E89ECDDF9B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67A1E5B3-9D8B-463D-8FFB-E89ECDDF9B16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ABA3B05-C49A-4BD0-B56E-26C6BF1E9D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ABA3B05-C49A-4BD0-B56E-26C6BF1E9D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ABA3B05-C49A-4BD0-B56E-26C6BF1E9D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ABA3B05-C49A-4BD0-B56E-26C6BF1E9D69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ABCC134B-BBAD-45B2-9CED-41C6A890B566} = {CF9BDCC6-A0D6-4696-AE50-8E3DF96C19FE}
+		{0D73F677-F001-4293-9928-23484942CAD6} = {CF9BDCC6-A0D6-4696-AE50-8E3DF96C19FE}
+		{67A1E5B3-9D8B-463D-8FFB-E89ECDDF9B16} = {CF9BDCC6-A0D6-4696-AE50-8E3DF96C19FE}
+		{0ABA3B05-C49A-4BD0-B56E-26C6BF1E9D69} = {CF9BDCC6-A0D6-4696-AE50-8E3DF96C19FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE77769A-2D97-40AD-8F62-9C8471F81EEC}
