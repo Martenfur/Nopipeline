@@ -17,6 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nopipeline.Sample", "..\Nop
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nopipeline.Sample.Content", "..\Nopipeline.Sample\Nopipeline.Sample.Content\Nopipeline.Sample.Content.csproj", "{0ABA3B05-C49A-4BD0-B56E-26C6BF1E9D69}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_", "_", "{9454C44F-E170-4EAE-AD12-93D91F360B29}"
+	ProjectSection(SolutionItems) = preProject
+		..\Directory.Build.props = ..\Directory.Build.props
+		..\Nuget.props = ..\Nuget.props
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
