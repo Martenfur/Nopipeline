@@ -9,6 +9,9 @@
 		<AssemblyName>npl</AssemblyName>
 		<UseAppHost>true</UseAppHost>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>NopipelineTest</Title>
+		<Version>2.2.1-dev.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -17,6 +20,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 </Project>
