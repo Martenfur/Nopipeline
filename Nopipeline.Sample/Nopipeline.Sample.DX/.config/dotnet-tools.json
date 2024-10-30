@@ -1,13 +1,10 @@
 ﻿{
 	"version": 1,
 	"isRoot": true,
-	"tools":
-	{
-		"dotnet-mgcb":
-		{
-			"version": "3.8.1.303",
-			"commands":
-			[
+	"tools": {
+		"dotnet-mgcb": {
+			"version": "3.8.2.1105",
+			"commands": [
 				"mgcb"
 			]
 		}
