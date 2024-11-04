@@ -1,8 +1,8 @@
 ﻿<Project>
 	<PropertyGroup>
-		<Version>2.2.0</Version>
+		<Version>2.3.0</Version>
 		<Description>A Content Pipeline addon for Monogame which fully replaces Pipeline UI.</Description>
-		<Authors>Martenfur</Authors>
+		<Authors>minkberry</Authors>
 		<Company>Chai Foxes</Company>
 		<Product>Nopipeline</Product>
 		<PackageTags>Monogame, Pipeline</PackageTags>
