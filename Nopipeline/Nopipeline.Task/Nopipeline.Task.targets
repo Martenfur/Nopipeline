@@ -6,11 +6,11 @@
 
 	<Target Name="Nopipeline">
 		<Exec 
-			Command="dotnet &quot;$(MSBuildThisFileDirectory)/../tools/net6.0/any/npl.dll&quot; &quot;%(NPLContentReferences.FullPath)&quot;" 
+			Command="dotnet &quot;$(MSBuildThisFileDirectory)/../tools/net8.0/any/npl.dll&quot; &quot;%(NPLContentReferences.FullPath)&quot;" 
 			Condition="'%(NPLContentReferences.FullPath)' != ''"
 		/>
 		<Exec 
-			Command="dotnet &quot;$(MSBuildThisFileDirectory)/../tools/net6.0/any/npl.dll&quot; &quot;%(MGCBContentReferences.FullPath)&quot;" 
+			Command="dotnet &quot;$(MSBuildThisFileDirectory)/../tools/net8.0/any/npl.dll&quot; &quot;%(MGCBContentReferences.FullPath)&quot;" 
 			Condition="'%(MGCBContentReferences.FullPath)' != ''"
 		/>
 	</Target>
